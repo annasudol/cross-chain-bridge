@@ -1,17 +1,17 @@
 import '../styles/global.css';
 
-import { NextUIProvider } from '@nextui-org/react';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 
+import { UIProvider } from '@/providers/UIProvider';
 import { Web3Provider } from '@/providers/Web3';
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <Web3Provider>
-    <NextUIProvider>
+    <UIProvider>
       <ToastContainer />
       <Component {...pageProps} />
-    </NextUIProvider>
+    </UIProvider>
   </Web3Provider>
 );
 

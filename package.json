@@ -45,7 +45,12 @@
     "react-toastify": "^11.0.2",
     "styled-jsx-plugin-postcss": "^4.0.1",
     "viem": "^2.21.55",
-    "wagmi": "^2.14.1"
+    "wagmi": "^2.14.1",
+    "apexcharts": "^3.35.5",
+    "formik": "^2.4.6",
+    "next-themes": "0.2.1",
+    "react-apexcharts": "^1.4.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.1.0",

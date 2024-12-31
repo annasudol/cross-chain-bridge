@@ -15,13 +15,11 @@ export function MainLayout(props: PropsWithChildren) {
         description={AppConfig.description}
         canonical={AppConfig.url}
       />
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col justify-between">
         <MainNavbar />
         <MainHeader />
-        <main className="bg-slate-200">
-          <div className="mx-auto min-h-[55vh] max-w-2xl grow">
-            {props.children}
-          </div>
+        <main className="">
+          <div className="mx-auto max-w-2xl grow">{props.children}</div>
         </main>
         <Footer />
       </div>
