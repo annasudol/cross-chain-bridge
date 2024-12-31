@@ -1,0 +1,1 @@
+#  NextJS Starter Wagmi Dapp
