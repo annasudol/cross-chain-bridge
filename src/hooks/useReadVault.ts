@@ -1,25 +1,30 @@
+import type { Address } from 'viem';
 import { erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { getBridgeAddress } from '@/constants/contract';
-import type { CallContractResponse } from '@/types';
+import type { CallContractStatus, TokenValue } from '@/types';
+import { formatBigInt } from '@/lib/formatBigInt';
 
-interface BalanceToken {
-  balance?: bigint;
-}
 interface ReadVaultDataReturn {
-  tokens: CallContractResponse<BalanceToken>;
-  balance?: bigint;
+  balance: {
+    value?: TokenValue;
+    status: CallContractStatus;
+  }
+  sybmol: {
+    value?: string;
+    status: CallContractStatus;
+  }
 }
 
 export function useReadData(): ReadVaultDataReturn {
-  const { chain } = useAccount();
+  const { chain, address } = useAccount();
   const bridgeAddress = getBridgeAddress(chain?.id);
 
   const {
     data: tokenAddress,
-    isLoading: readTokenAddressLoading,
-    isError: readTokenAddressError,
+    isLoading: tokenAddressLoading,
+    isError: tokenAddressError,
   } = useReadContract({
     abi: [
       {
@@ -33,11 +38,10 @@ export function useReadData(): ReadVaultDataReturn {
     functionName: 'token',
     address: bridgeAddress,
   });
-
   const {
-    data: tokenSymbol,
-    isLoading: readtokenSymbolLoading,
-    isError: readTokenSymbolError,
+    data: symbol,
+    isLoading: symbolLoading,
+    isError: symbolError,
   } = useReadContract({
     abi: erc20Abi,
     address: tokenAddress,
@@ -45,149 +49,48 @@ export function useReadData(): ReadVaultDataReturn {
   });
 
   const {
-    data: tokenDecimals,
-    isLoading: readtokenDecimalsLoading,
-    isError: readTokenDecimalsError,
+    data: decimals,
+    isLoading: decimalsLoading,
+    isError: decimalsError,
   } = useReadContract({
     abi: erc20Abi,
     address: tokenAddress,
     functionName: 'decimals',
   });
+  console.log(decimals);
 
   const {
-    data: tokenBalance,
-    isLoading: readTokenBalanceLoading,
-    isError: readTokenBalanceError,
+    data: balanceBInt,
+    isLoading: balanceBIntLoading,
+    isError: balanceBIntError,
   } = useReadContract({
     abi: erc20Abi,
     address: tokenAddress,
     functionName: 'balanceOf',
+    args: [address as Address],
   });
+  console.log(decimals, 'tokenBalance');
+  const balance: TokenValue | undefined = (balanceBInt && decimals) ?{
+    bigInt: balanceBInt,
+    int: formatBigInt(balanceBInt, decimals),
+  } : undefined;
 
-  // return {
-  //   tokens: {
-  //     balance: tokenBalance,
-  //   },
-  // };
-
-  // const {
-  //   data: token1Address,
-  //   isLoading: readToken1AddressLoading,
-  //   isError: readToken1AddressError,
-  // } = useReadContract({
-  //   ...vaultContract,
-  //   functionName: 'token1',
-  // });
-
-  // const {
-  //   data: totalUnderlying,
-  //   isLoading: readTotalUnderlyingLoading,
-  //   isError: readtoTalUnderlyingError,
-  // } = useReadContract({
-  //   ...helperContract,
-  //   functionName: 'totalUnderlying',
-  //   args: [vaultAddress as Address],
-  // });
-
-  // const {
-  //   data: token0Symbol,
-  //   isLoading: readtoken0SymbolLoading,
-  //   isError: readToken0SymbolError,
-  // } = useReadContract({
-  //   abi: erc20Abi,
-  //   address: token0Address,
-  //   functionName: 'symbol',
-  // });
-
-  // const {
-  //   data: token0Decimals,
-  //   isLoading: readtoken0DecimalsLoading,
-  //   isError: readToken0DecimalsError,
-  // } = useReadContract({
-  //   abi: erc20Abi,
-  //   address: token0Address,
-  //   functionName: 'decimals',
-  // });
-
-  // const {
-  //   data: token1Symbol,
-  //   isLoading: readToken1SymbolLoading,
-  //   isError: readToken1SymbolError,
-  // } = useReadContract({
-  //   abi: erc20Abi,
-  //   address: token1Address,
-  //   functionName: 'symbol',
-  // });
-
-  // const {
-  //   data: token1Decimals,
-  //   isLoading: readToken1DecimalsLoading,
-  //   isError: readToken1DecimalsError,
-  // } = useReadContract({
-  //   abi: erc20Abi,
-  //   address: token1Address,
-  //   functionName: 'decimals',
-  // });
-  // let tokens = {};
-  // if (
-  //   token0Symbol &&
-  //   token1Symbol &&
-  //   token0Address &&
-  //   token1Address &&
-  //   token0Decimals &&
-  //   token1Decimals
-  // ) {
-  //   tokens = {
-  //     [token0Symbol as TokenSymbol]: {
-  //       symbol: token0Symbol,
-  //       decimals: token0Decimals,
-  //       address: token0Address,
-  //     },
-  //     [token1Symbol as TokenSymbol]: {
-  //       symbol: token1Symbol,
-  //       decimals: token1Decimals,
-  //       address: token1Address,
-  //     },
-  //   };
-  // }
-  // let vaultData: VaultData | undefined;
-
-  // if (totalUnderlying && contractName) {
-  //   const ratioBN = totalUnderlying[1] / totalUnderlying[0];
-  //   const ratio = Number(ratioBN);
-  //   vaultData = {
-  //     contractName,
-  //     ratio,
-  //   };
-  // }
-
-  // return {
-  //   vaultAddressIsInvalid,
-  //   vaultData,
-  //   tokens,
-  //   vaultStatus: {
-  //     isError:
-  //       readNameError ||
-  //       readToken0AddressError ||
-  //       readToken1AddressError ||
-  //       readtoTalUnderlyingError,
-  //     isLoading:
-  //       readNameLoading ||
-  //       readToken0AddressLoading ||
-  //       readToken1AddressLoading ||
-  //       readTotalUnderlyingLoading,
-  //   },
-  //   tokensStatus: {
-  //     isError:
-  //       readToken0SymbolError ||
-  //       readToken0DecimalsError ||
-  //       readToken1SymbolError ||
-  //       readToken1DecimalsError,
-  //     isLoading:
-  //       readtoken0SymbolLoading ||
-  //       readtoken0DecimalsLoading ||
-  //       readToken1SymbolLoading ||
-  //       readToken1DecimalsLoading,
-  //   },
-  // };
+  return {
+    balance: {
+      value: balance,
+      status: {
+        isLoading: balanceBIntLoading || decimalsLoading || tokenAddressLoading,
+        isError: balanceBIntError || decimalsError || tokenAddressError,
+        isSuccess: balance !== undefined,
+      }
+    },
+    sybmol: {
+      value: symbol,
+      status: {
+        isLoading: symbolLoading,
+        isError: symbolError,
+        isSuccess: symbol !== undefined,
+      }
+    }
+  };
 }

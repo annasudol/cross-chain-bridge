@@ -35,15 +35,9 @@ export interface TokensCollection<T> {
   [key: string]: T;
 }
 
-export interface DepositValue {
+export interface TokenValue {
   int?: string;
   bigInt?: bigint;
-}
-
-export interface DepositTokens extends TokensCollection<DepositValue> {}
-
-export interface TokenDeposit {
-  deposit?: string;
 }
 
 export type Address = `0x${string}`;
@@ -56,19 +50,8 @@ export enum StepType {
   Liquidity = 'Liquidity',
 }
 
-export enum CallContractStatus {
-  Success = 'success',
-  Error = 'error',
-  Pending = 'pending',
+export interface CallContractStatus {
+  isLoading: boolean;
+  isError: boolean;
+  isSuccess?: boolean;
 }
-
-interface SuccessfullResponse<T> {
-  status: CallContractStatus.Success;
-  data: T;
-}
-
-interface ErrorResponse {
-  status: CallContractStatus.Error;
-}
-
-export type CallContractResponse<T> = SuccessfullResponse<T> | ErrorResponse;

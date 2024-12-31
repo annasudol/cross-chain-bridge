@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi';
 import { useReadData } from '@/hooks/useReadVault';
 
 import { SwitchNetworkButton } from './button/SwitchNetworkButton';
-
+import { BridgeForm } from './form/BridgeForm';
 // import { TokenQuantityInput } from '@/components/TokenQuantityInput';
 // import BridgeAbi from '@/abi/BridgeAbi.json';
 // import { useBalance } from '@/app/hooks/useBalance';
@@ -18,7 +18,8 @@ import { SwitchNetworkButton } from './button/SwitchNetworkButton';
 export function Bridge() {
   const [amount, setAmount] = useState('0.01');
   const [swapTxIsSuccess, setSwapTxIsSuccess] = useState(false);
-  const {} = useReadData();
+  const { balance, sybmol } = useReadData();
+  console.log(balance, 'balance');
   // const { openChainModal } = useChainModal();
 
   // const { Add } = useNotifications();
@@ -83,36 +84,21 @@ export function Bridge() {
 
   return (
     <>
-      <div className="flex h-96 flex-col justify-between px-2 py-4">
+      <div className="flex h-96 flex-col px-2 py-4">
         <SwitchNetworkButton />
-        <div className="py-2 pl-1 text-white">
+        <div className="text-white">
           {address && chain?.id && (
             <>
-              {/* Your balance: {formattedBalance}
+              Your balance:
               <span className="mx-2 text-white">
-                {getChainById(chain?.id)?.name}
-              </span> */}
+                {balance?.value?.int} {sybmol.value}
+              </span>
             </>
           )}
         </div>
-        {/* {swapTxIsSuccess ? (
-          <ButtonSubmit onClick={handleClick}>
-            click to change network to{' '}
-            {getChainById(chain?.id).swapTokensChains[0]}
-          </ButtonSubmit>
-        ) : (
-          <div className="m-2">
-            <div className="form-control w-full">
-              <TokenQuantityInput
-                id="swap-amount"
-                label={getChainById(chain?.id).name}
-                onChange={setAmount}
-                quantity={amount}
-                maxValue={formattedBalance}
-                disabled={isPending || isLoading}
-              />
-            </div>
-            <ButtonSubmit
+        <div className="m-2">
+           <BridgeForm />
+            {/* <ButtonSubmit
               onClick={handleSendTransaction}
               disabled={!address || Number(amount) < 0.01}
               isLoading={isPending || isLoading}
@@ -121,8 +107,15 @@ export function Bridge() {
                 ? 'Insufficient balance'
                 : `Swap ${amount} ${getChainById(chain?.id)?.name} to
               ${getChainById(chain?.id)?.name === 'sETH' ? 'sBCS' : 'sETH'}`}
-            </ButtonSubmit>
+            </ButtonSubmit> */}
           </div>
+        {/* {swapTxIsSuccess ? (
+          <ButtonSubmit onClick={handleClick}>
+            click to change network to{' '}
+            {getChainById(chain?.id).swapTokensChains[0]}
+          </ButtonSubmit>
+        ) : (
+  
         )} */}
       </div>
     </>
