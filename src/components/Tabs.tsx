@@ -1,5 +1,7 @@
 import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 
+import { Bridge } from './Bridge';
+
 export default function MyTabs() {
   return (
     <div className="flex w-full flex-col">
@@ -7,10 +9,7 @@ export default function MyTabs() {
         <Tab key="bridge" title="Bridge">
           <Card>
             <CardBody>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              <Bridge />
             </CardBody>
           </Card>
         </Tab>
