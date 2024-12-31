@@ -60,11 +60,3 @@ const MyButton = ({
   );
 };
 export default MyButton;
-// className =
-//   'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white';
-// radius =
-//   (
-//     <span className="flex size-full rounded-full bg-gray-900 p-2 text-white">
-//       Gradient border
-//     </span>
-//   ) < 'full';

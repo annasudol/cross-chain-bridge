@@ -1,9 +1,9 @@
 export const AppConfig = {
   name: 'Web3 Template',
   emoji: '🚀',
-  title: 'Next.js Web3 Template | Crypro bridge',
+  title: 'Next.js Web3 Template',
   description:
-    'Web3 template for building decentralized applications with Next.js, Tailwind CSS, and Ethers.js.',
+    'Start your next Web3 project with this template on simple crypto bridge as a starting point.',
   locale: 'en',
   url: '/',
   author: 'Anna Sudol',
