@@ -7,12 +7,21 @@ const Footer = () => (
     <div className="mx-auto flex-col items-center justify-center">
       <p className="py-1 ">
         Developed by{' '}
-        <Link isExternal href={AppConfig.author_git}>
+        <Link
+          isExternal
+          href={AppConfig.author_git}
+          className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+        >
           {AppConfig.author}
         </Link>
         .
       </p>
-      <Link isExternal showAnchorIcon href={AppConfig.url}>
+      <Link
+        isExternal
+        showAnchorIcon
+        href={AppConfig.url}
+        className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+      >
         Visit source code on GitHub.
       </Link>
     </div>

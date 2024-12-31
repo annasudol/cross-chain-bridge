@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { ButtonIcon, MyButton } from '@/components/button/MyButton';
+import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
 
 type ErrorProps = {
   message: string;
@@ -18,7 +18,7 @@ const ErrorInfo = ({ message, desription }: ErrorProps) => {
       <MyButton
         className="w-full max-w-48 text-white"
         onPress={() => router.push('/')}
-        icon={ButtonIcon.ArrowLeft}
+        iconLeft={ButtonLeftIcon.ArrowLeft}
       >
         Go back
       </MyButton>

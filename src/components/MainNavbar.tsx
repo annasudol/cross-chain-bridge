@@ -1,18 +1,15 @@
-import { Navbar } from '@nextui-org/react';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Link, Navbar } from '@nextui-org/react';
 
-import { LinkComponent } from '@/components/MyLink';
+import MyConnectButton from '@/components/button/MyConnectButton';
 import { AppConfig } from '@/config/AppConfig';
 
 const MainNavbar = () => (
   <Navbar className="w-full" shouldHideOnScroll>
     <div className="mx-auto flex w-full flex-wrap items-center justify-between">
       <nav className="py-6">
-        <LinkComponent href="/">
-          <h1 className="text-xl font-bold">{AppConfig.emoji}</h1>
-        </LinkComponent>
+        <Link href="/">{AppConfig.emoji}</Link>
       </nav>
-      <ConnectButton />
+      <MyConnectButton />
     </div>
   </Navbar>
 );
