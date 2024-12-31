@@ -1,5 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
+import MyButton from './MyButton';
+
 interface ISwitchNetworkBtn {
   label?: string;
 }
@@ -32,12 +34,12 @@ export const SwitchNetworkButton = ({ label }: ISwitchNetworkBtn) => {
                     {label && (
                       <span className="mx-1 text-lg text-white">{label}</span>
                     )}
-                    <button
+                    <MyButton
                       onClick={openChainModal}
                       disabled={!connected || chain?.unsupported}
-                      style={{ display: 'flex', alignItems: 'center' }}
                       type="button"
-                      className="inline-flex items-center rounded-full border border-transparent bg-indigo-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
+                      variant="bordered"
+                      // className="inline-flex items-center rounded-full border border-transparent bg-indigo-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
                     >
                       {chain?.hasIcon && (
                         <div
@@ -48,6 +50,7 @@ export const SwitchNetworkButton = ({ label }: ISwitchNetworkBtn) => {
                             borderRadius: 999,
                             overflow: 'hidden',
                             marginRight: 4,
+                            marginTop: 4,
                           }}
                         >
                           {chain.iconUrl && (
@@ -59,7 +62,7 @@ export const SwitchNetworkButton = ({ label }: ISwitchNetworkBtn) => {
                         </div>
                       )}
                       {chain?.name}
-                    </button>
+                    </MyButton>
                   </div>
                 );
               }

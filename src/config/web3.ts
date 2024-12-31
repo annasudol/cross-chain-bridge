@@ -1,6 +1,5 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { http } from 'viem';
-import { arbitrum } from 'viem/chains';
+import { bscTestnet, sepolia } from 'viem/chains';
 
 import { AppConfig } from '@/config/AppConfig';
 
@@ -11,9 +10,10 @@ export const WALLETCONNECT_PROJECT_ID =
 export const wagmiConfig = getDefaultConfig({
   appName: AppConfig.name,
   projectId: WALLETCONNECT_PROJECT_ID,
-  chains: [arbitrum],
+  chains: [sepolia, bscTestnet],
   ssr: true,
-  transports: {
-    [arbitrum.id]: http(process.env.NEXT_PUBLIC_ARBITRUM_RPC_URL),
-  },
 });
+
+// transports: {
+//   [arbitrum.id]: http(process.env.NEXT_PUBLIC_ARBITRUM_RPC_URL),
+// },

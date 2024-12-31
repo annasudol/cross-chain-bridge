@@ -1,42 +1,74 @@
-import type {
-  CallContractStatus,
-  TokenInfo,
-  TokensCollection,
-  VaultData,
-} from '@/types';
+import { erc20Abi } from 'viem';
+import { useAccount, useReadContract } from 'wagmi';
 
+import { getBridgeAddress } from '@/constants/contract';
+import type { CallContractResponse } from '@/types';
+
+interface BalanceToken {
+  balance?: bigint;
+}
 interface ReadVaultDataReturn {
-  vaultData?: VaultData;
-  vaultStatus: CallContractStatus;
-  tokens: TokensCollection<TokenInfo>;
-  tokensStatus: CallContractStatus;
+  tokens: CallContractResponse<BalanceToken>;
+  balance?: bigint;
 }
 
-export function useReadData() {
-  // const { chain } = useNetwork();
+export function useReadData(): ReadVaultDataReturn {
+  const { chain } = useAccount();
+  const bridgeAddress = getBridgeAddress(chain?.id);
 
-  // const vaultContract = {
-  //   abi: bridgeABI,
-  //   address: vaultAddress as Address,
+  const {
+    data: tokenAddress,
+    isLoading: readTokenAddressLoading,
+    isError: readTokenAddressError,
+  } = useReadContract({
+    abi: [
+      {
+        inputs: [],
+        name: 'token',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    functionName: 'token',
+    address: bridgeAddress,
+  });
+
+  const {
+    data: tokenSymbol,
+    isLoading: readtokenSymbolLoading,
+    isError: readTokenSymbolError,
+  } = useReadContract({
+    abi: erc20Abi,
+    address: tokenAddress,
+    functionName: 'symbol',
+  });
+
+  const {
+    data: tokenDecimals,
+    isLoading: readtokenDecimalsLoading,
+    isError: readTokenDecimalsError,
+  } = useReadContract({
+    abi: erc20Abi,
+    address: tokenAddress,
+    functionName: 'decimals',
+  });
+
+  const {
+    data: tokenBalance,
+    isLoading: readTokenBalanceLoading,
+    isError: readTokenBalanceError,
+  } = useReadContract({
+    abi: erc20Abi,
+    address: tokenAddress,
+    functionName: 'balanceOf',
+  });
+
+  // return {
+  //   tokens: {
+  //     balance: tokenBalance,
+  //   },
   // };
-
-  // const {
-  //   data: contractName,
-  //   isLoading: readNameLoading,
-  //   isError: readNameError,
-  // } = useReadContract({
-  //   ...vaultContract,
-  //   functionName: 'name',
-  // });
-
-  // const {
-  //   data: token0Address,
-  //   isLoading: readToken0AddressLoading,
-  //   isError: readToken0AddressError,
-  // } = useReadContract({
-  //   ...vaultContract,
-  //   functionName: 'token0',
-  // });
 
   // const {
   //   data: token1Address,
@@ -129,33 +161,33 @@ export function useReadData() {
   //   };
   // }
 
-  return {
-    vaultAddressIsInvalid,
-    vaultData,
-    tokens,
-    vaultStatus: {
-      isError:
-        readNameError ||
-        readToken0AddressError ||
-        readToken1AddressError ||
-        readtoTalUnderlyingError,
-      isLoading:
-        readNameLoading ||
-        readToken0AddressLoading ||
-        readToken1AddressLoading ||
-        readTotalUnderlyingLoading,
-    },
-    tokensStatus: {
-      isError:
-        readToken0SymbolError ||
-        readToken0DecimalsError ||
-        readToken1SymbolError ||
-        readToken1DecimalsError,
-      isLoading:
-        readtoken0SymbolLoading ||
-        readtoken0DecimalsLoading ||
-        readToken1SymbolLoading ||
-        readToken1DecimalsLoading,
-    },
-  };
+  // return {
+  //   vaultAddressIsInvalid,
+  //   vaultData,
+  //   tokens,
+  //   vaultStatus: {
+  //     isError:
+  //       readNameError ||
+  //       readToken0AddressError ||
+  //       readToken1AddressError ||
+  //       readtoTalUnderlyingError,
+  //     isLoading:
+  //       readNameLoading ||
+  //       readToken0AddressLoading ||
+  //       readToken1AddressLoading ||
+  //       readTotalUnderlyingLoading,
+  //   },
+  //   tokensStatus: {
+  //     isError:
+  //       readToken0SymbolError ||
+  //       readToken0DecimalsError ||
+  //       readToken1SymbolError ||
+  //       readToken1DecimalsError,
+  //     isLoading:
+  //       readtoken0SymbolLoading ||
+  //       readtoken0DecimalsLoading ||
+  //       readToken1SymbolLoading ||
+  //       readToken1DecimalsLoading,
+  //   },
+  // };
 }

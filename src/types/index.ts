@@ -56,8 +56,19 @@ export enum StepType {
   Liquidity = 'Liquidity',
 }
 
-export interface CallContractStatus {
-  isLoading: boolean;
-  isError: boolean;
-  isSuccess?: boolean;
+export enum CallContractStatus {
+  Success = 'success',
+  Error = 'error',
+  Pending = 'pending',
 }
+
+interface SuccessfullResponse<T> {
+  status: CallContractStatus.Success;
+  data: T;
+}
+
+interface ErrorResponse {
+  status: CallContractStatus.Error;
+}
+
+export type CallContractResponse<T> = SuccessfullResponse<T> | ErrorResponse;
