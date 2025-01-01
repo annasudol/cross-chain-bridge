@@ -1,10 +1,10 @@
-import { Input } from '@nextui-org/react';
 import { Formik } from 'formik';
 import React from 'react';
 
 import { useReadData } from '@/hooks/useReadVault';
 
 import MyButton from '../button/MyButton';
+import { TokenTinput } from '../inputs/TokenTinput';
 
 export const BridgeForm = () => {
   const { balance, sybmol } = useReadData();
@@ -44,21 +44,30 @@ export const BridgeForm = () => {
           handleBlur,
           handleSubmit,
           isSubmitting,
-          /* and other goodies */
         }) => (
           <form onSubmit={handleSubmit}>
-            <Input
-              type="number"
+            <TokenTinput
+              label={sybmol.value || 'sETH'}
+              labelPlacement="outside"
               name="value"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.value}
+              isInvalid={Boolean(errors.value && touched.value)}
+              errorMessage={errors.value}
+              disabled={isSubmitting || !sybmol.value || !balance.value}
+              max={balance.value?.int}
             />
-            {errors.value && touched && errors.value}
-            {errors.value}
 
-            <MyButton type="submit" disabled={isSubmitting}>
-              Submit
+            <MyButton
+              type="submit"
+              disabled={isSubmitting}
+              size="lg"
+              variant="solid"
+              className="mt-12 px-12"
+            >
+              {`Swap ${values.value} ${sybmol.value} to ${values.value}
+              ${sybmol.value === 'sETH' ? 'sBCS' : 'sETH'}`}
             </MyButton>
           </form>
         )}

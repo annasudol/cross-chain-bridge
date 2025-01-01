@@ -47,15 +47,22 @@ const MyButton = ({
       radius="full"
       variant="solid"
       className={cn(
-        variant === 'bordered' &&
-          'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white text-center',
+        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white text-center',
+        variant === 'solid' && 'px-4',
         className,
       )}
       isLoading={isLoading}
     >
-      <span className="flex size-full justify-center rounded-full bg-gray-900 px-3 py-2 text-center text-white">
-        {buttonIconLefi} {children} {buttonIconRight}
-      </span>
+      {variant === 'bordered' ? (
+        <span className="flex size-full justify-center rounded-full bg-gray-900 px-3 py-2 text-center text-white">
+          {buttonIconLefi} {children} {buttonIconRight}
+        </span>
+      ) : (
+        <>
+          {' '}
+          {buttonIconLefi} {children} {buttonIconRight}
+        </>
+      )}
     </Button>
   );
 };

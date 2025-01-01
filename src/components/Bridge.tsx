@@ -86,7 +86,7 @@ export function Bridge() {
     <>
       <div className="flex h-96 flex-col px-2 py-4">
         <SwitchNetworkButton />
-        <div className="text-white">
+        <p className="mt-12 text-sm text-white">
           {address && chain?.id && (
             <>
               Your balance:
@@ -95,10 +95,10 @@ export function Bridge() {
               </span>
             </>
           )}
-        </div>
+        </p>
         <div className="m-2">
-           <BridgeForm />
-            {/* <ButtonSubmit
+          <BridgeForm />
+          {/* <ButtonSubmit
               onClick={handleSendTransaction}
               disabled={!address || Number(amount) < 0.01}
               isLoading={isPending || isLoading}
@@ -108,7 +108,7 @@ export function Bridge() {
                 : `Swap ${amount} ${getChainById(chain?.id)?.name} to
               ${getChainById(chain?.id)?.name === 'sETH' ? 'sBCS' : 'sETH'}`}
             </ButtonSubmit> */}
-          </div>
+        </div>
         {/* {swapTxIsSuccess ? (
           <ButtonSubmit onClick={handleClick}>
             click to change network to{' '}
