@@ -43,15 +43,15 @@ const MyButton = ({
 
   return (
     <Button
-      {...props}
       radius="full"
       variant="solid"
       className={cn(
-        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white text-center',
+        'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white text-center disabled:opacity-50',
         variant === 'solid' && 'px-4',
         className,
       )}
       isLoading={isLoading}
+      {...props}
     >
       {variant === 'bordered' ? (
         <span className="flex size-full justify-center rounded-full bg-gray-900 px-3 py-2 text-center text-white">

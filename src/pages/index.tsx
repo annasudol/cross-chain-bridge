@@ -6,7 +6,7 @@ import MyTabs from '@/components/Tabs';
 const HomePage = () => {
   return (
     <MainLayout>
-      <div className="flex flex-col items-center justify-center gap-8 py-12 md:flex-row">
+      <div className="flex flex-col items-center justify-center gap-8 px-6 sm:py-12 md:flex-row">
         <MyTabs />
       </div>
     </MainLayout>

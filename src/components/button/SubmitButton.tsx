@@ -17,15 +17,17 @@ const SubmitButton = ({ children, ...props }: SubmitButtonProps) => {
   return (
     <div className="flex w-full flex-col text-center">
       <MyButton
-        className=" min-w-56 disabled:opacity-50 disabled:hover:opacity-50"
-        disabled={!address || props.isDisabled}
+        className="min-w-56 opacity-45 disabled:opacity-50 disabled:hover:opacity-60"
+        isDisabled={!address || props.isDisabled}
+        size="lg"
+        variant="solid"
         {...props}
       >
         {!address ? 'Wallet is not connected' : children}
       </MyButton>
       {!address && (
         <button
-          className="mt-4 text-center text-sm text-gray-500 underline hover:opacity-80"
+          className="mt-4 text-center text-sm text-gray-300 underline hover:opacity-80"
           onClick={openConnectModal}
         >
           Connect your wallet

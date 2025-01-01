@@ -1,25 +1,29 @@
 import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 
-import { Bridge } from './Bridge';
+import { FacetForm } from '@/components/form/FacetForm';
+import { SwapForm } from '@/components/form/SwapForm';
+
+import { Wrapper } from './Wrapper';
 
 export default function MyTabs() {
   return (
     <div className="flex w-full flex-col">
-      <Tabs aria-label="Options">
-        <Tab key="bridge" title="Bridge">
+      <Tabs aria-label="Options" color="primary" size="lg">
+        <Tab key="bridge" title="Swap">
           <Card>
             <CardBody>
-              <Bridge />
+              <Wrapper>
+                <SwapForm />
+              </Wrapper>
             </CardBody>
           </Card>
         </Tab>
         <Tab key="facet" title="Facet">
           <Card>
             <CardBody>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur.
+              <Wrapper>
+                <FacetForm />
+              </Wrapper>
             </CardBody>
           </Card>
         </Tab>

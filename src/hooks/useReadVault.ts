@@ -3,18 +3,18 @@ import { erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { getBridgeAddress } from '@/constants/contract';
-import type { CallContractStatus, TokenValue } from '@/types';
 import { formatBigInt } from '@/lib/formatBigInt';
+import type { CallContractStatus, TokenInfo, TokenValue } from '@/types';
 
 interface ReadVaultDataReturn {
   balance: {
     value?: TokenValue;
     status: CallContractStatus;
-  }
-  sybmol: {
-    value?: string;
+  };
+  token: {
+    value?: TokenInfo;
     status: CallContractStatus;
-  }
+  };
 }
 
 export function useReadData(): ReadVaultDataReturn {
@@ -57,7 +57,6 @@ export function useReadData(): ReadVaultDataReturn {
     address: tokenAddress,
     functionName: 'decimals',
   });
-  console.log(decimals);
 
   const {
     data: balanceBInt,
@@ -69,12 +68,21 @@ export function useReadData(): ReadVaultDataReturn {
     functionName: 'balanceOf',
     args: [address as Address],
   });
-  console.log(decimals, 'tokenBalance');
-  const balance: TokenValue | undefined = (balanceBInt && decimals) ?{
-    bigInt: balanceBInt,
-    int: formatBigInt(balanceBInt, decimals),
-  } : undefined;
+  const balance: TokenValue | undefined =
+    balanceBInt && decimals
+      ? {
+          bigInt: balanceBInt,
+          int: formatBigInt(balanceBInt, decimals),
+        }
+      : undefined;
 
+  const token =
+    symbol && decimals
+      ? {
+          symbol,
+          decimals,
+        }
+      : undefined;
   return {
     balance: {
       value: balance,
@@ -82,15 +90,15 @@ export function useReadData(): ReadVaultDataReturn {
         isLoading: balanceBIntLoading || decimalsLoading || tokenAddressLoading,
         isError: balanceBIntError || decimalsError || tokenAddressError,
         isSuccess: balance !== undefined,
-      }
+      },
     },
-    sybmol: {
-      value: symbol,
+    token: {
+      value: token,
       status: {
         isLoading: symbolLoading,
         isError: symbolError,
         isSuccess: symbol !== undefined,
-      }
-    }
+      },
+    },
   };
 }

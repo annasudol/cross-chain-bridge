@@ -21,9 +21,8 @@ export interface TokenBalance {
 }
 
 export interface TokenInfo {
-  address?: Address;
-  symbol?: string;
-  decimals?: number;
+  symbol: string;
+  decimals: number;
 }
 
 export interface VaultData {
