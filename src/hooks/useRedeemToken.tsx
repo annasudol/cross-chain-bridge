@@ -12,7 +12,6 @@ import { getBridgeAddress } from '@/constants/contract';
 import { parseToBigInt } from '@/lib/formatBigInt';
 import type { CallContractStatus, IStorage, TxHash } from '@/types';
 
-import useLocalStorage from './useLocalStorage';
 import { useReadData } from './useReadVault';
 
 interface RedeemValues extends IStorage {}
@@ -28,7 +27,6 @@ const useRedeemToken = (): RedeemTokenReturn => {
   const bridgeAddress = getBridgeAddress(chain?.id);
   const { token, handleRefetchBalance } = useReadData();
   const [txHashSwap, setTxHashSwap] = useState<string>();
-  const { removeStorageValue } = useLocalStorage(`redeem-${[chain?.id]}`);
   const {
     data: redeemHash,
     writeContract: redeemToken,
@@ -47,7 +45,7 @@ const useRedeemToken = (): RedeemTokenReturn => {
   useEffect(() => {
     if (txSuccess && address && txHashSwap) {
       handleRefetchBalance();
-      removeStorageValue(txHashSwap);
+      // removeStorageValue(txHashSwap);
     }
   }, [txSuccess, redeemHash, address]);
 

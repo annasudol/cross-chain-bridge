@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { Address } from 'viem';
 
 import type { IStorage } from '@/types';
@@ -38,21 +38,24 @@ const useLocalStorage = (key: string) => {
     }
   };
 
-  const removeStorageValue = (txHash: string) => {
-    try {
-      let valueStoreToRemove: IStorage[] = [];
-      if (localstoragestate && Object.values(localstoragestate).length > 0) {
-        valueStoreToRemove = localstoragestate.filter(
-          (v: IStorage) => v.txHash === txHash,
-        );
+  const removeStorageValue = useCallback(
+    (txHash: string) => {
+      try {
+        if (localstoragestate) {
+          const updatedStorage = localstoragestate.filter(
+            (item: IStorage) => item.txHash !== txHash,
+          );
+          window.localStorage.setItem(key, JSON.stringify(updatedStorage));
+          setLocalStorageState(updatedStorage);
+        }
+      } catch {
+        throw new Error('Error removing value');
       }
-      window.localStorage.removeItem(JSON.stringify(valueStoreToRemove));
-    } catch {
-      throw new Error('Error removing value');
-    }
-  };
+    },
+    [key, localstoragestate],
+  );
 
-  return { localstoragestate, setStorageValue, removeStorageValue };
+  return { localstoragestate, removeStorageValue, setStorageValue };
 };
 
 export default useLocalStorage;

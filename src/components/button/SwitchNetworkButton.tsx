@@ -31,7 +31,7 @@ export const SwitchNetworkButton = ({ label, children }: ISwitchNetworkBtn) => {
             {(() => {
               if (connected) {
                 return (
-                  <div className="flex max-w-max items-center justify-start">
+                  <div>
                     {label && (
                       <span className="mx-1 text-lg text-white">{label}</span>
                     )}

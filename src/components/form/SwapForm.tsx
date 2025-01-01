@@ -21,7 +21,7 @@ export const SwapForm = () => {
 
   if (tx && statusWrite.isSuccess) {
     return (
-      <div>
+      <div className="flex flex-col items-stretch">
         <MyAlert
           message="Transaction is successful"
           color="success"

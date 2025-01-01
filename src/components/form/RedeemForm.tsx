@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAccount } from 'wagmi';
 
 import { MyAlert } from '@/components/MyAlert';
@@ -6,16 +6,32 @@ import { TxLink } from '@/components/TxLink';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadVault';
 import { useRedeemToken } from '@/hooks/useRedeemToken';
+import type { IStorage } from '@/types';
 
 import { SubmitButton } from '../button/SubmitButton';
 
 export const RedeemForm = () => {
   const { token } = useReadData();
   const { chain, address } = useAccount();
-  // const [txRedeemed, setTxRedeemed] = useState<IStorage>();
-
+  const [txSwapHash, setTxSwapHash] = React.useState<string>();
   const { handleRedeem, tx, statusWrite } = useRedeemToken();
-  const { localstoragestate } = useLocalStorage(`redeem-${[chain?.id]}`);
+  const { localstoragestate, removeStorageValue } = useLocalStorage(
+    `redeem-${[chain?.id]}`,
+  );
+
+  useEffect(() => {
+    if (tx && statusWrite.isSuccess && txSwapHash) {
+      // Remove the successful transaction from local storage
+      removeStorageValue(txSwapHash);
+
+      // Optionally, perform any additional state updates here
+    }
+  }, [tx, statusWrite.isSuccess, removeStorageValue]);
+
+  const handleToRedeem = (v: IStorage) => {
+    setTxSwapHash(v.txHash);
+    handleRedeem(v);
+  };
 
   const redeemBtn = useMemo(() => {
     const redeemByAccount = localstoragestate?.filter(
@@ -29,7 +45,7 @@ export const RedeemForm = () => {
           )
         : redeemByAccount;
 
-    if (!redeemState) {
+    if (!redeemState || redeemState.length === 0) {
       return (
         <div className="mb-12">
           <MyAlert message="No transactions to redeem" color="warning" />
@@ -39,14 +55,20 @@ export const RedeemForm = () => {
     return redeemState.map((v) => (
       <SubmitButton
         key={v.txHash}
-        onPress={() => handleRedeem(v)}
+        onPress={() => handleToRedeem(v)}
         isLoading={statusWrite.isLoading}
+        className="my-2"
       >
-        Redeem {v.amount} {token.value?.symbol}
+        Redeem {v.amount} {token?.value?.symbol}
       </SubmitButton>
     ));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chain?.id, localstoragestate, address]);
+  }, [
+    chain?.id,
+    localstoragestate,
+    address,
+    handleRedeem,
+    statusWrite.isLoading,
+  ]);
 
   return (
     <div>
