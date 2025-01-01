@@ -23,17 +23,17 @@ interface FacetTokenReturn {
 const useFacetToken = (): FacetTokenReturn => {
   const { chain, address } = useAccount();
   const bridgeAddress = getBridgeAddress(chain?.id);
-  const { token } = useReadData();
+  const { token, handleRefetchBalance } = useReadData();
 
   const {
     data: facetHash,
     writeContract: facetToken,
     isPending: writeLoading,
     isError: writeError,
-    error: errorMessage,
+    // error: errorMessage,
   } = useWriteContract();
-
-  console.log(errorMessage);
+  // TODO: Add error message
+  // console.log(errorMessage);
 
   const { isSuccess: txSuccess, isLoading: txLoading } =
     useWaitForTransactionReceipt({
@@ -45,7 +45,7 @@ const useFacetToken = (): FacetTokenReturn => {
 
   useEffect(() => {
     if (txSuccess) {
-      // refetchAllowance();
+      handleRefetchBalance();
     }
   }, [txSuccess]);
 

@@ -54,3 +54,9 @@ export interface CallContractStatus {
   isError: boolean;
   isSuccess?: boolean;
 }
+
+export interface IStorage {
+  amount: string;
+  address: Address;
+  txHash: string;
+}

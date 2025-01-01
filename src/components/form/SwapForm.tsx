@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import React from 'react';
+import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
@@ -8,12 +9,17 @@ import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
 
+import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
+import { Loading } from '../Loading';
+
 export const SwapForm = () => {
   const { balance, token } = useReadData();
 
   const { handleSwap, statusWrite, tx } = useSwapToken();
 
-  if (tx) {
+  const { chain } = useAccount();
+
+  if (tx && statusWrite.isSuccess) {
     return (
       <div>
         <MyAlert
@@ -21,8 +27,15 @@ export const SwapForm = () => {
           color="success"
           description={<TxLink txHash={tx} />}
         />
+        <SwitchNetworkButton>
+          Click to change network to{' '}
+          {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
+        </SwitchNetworkButton>
       </div>
     );
+  }
+  if (token.status.isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -71,17 +84,28 @@ export const SwapForm = () => {
               value={values.value}
               isInvalid={Boolean(errors.value && touched.value)}
               errorMessage={errors.value}
-              disabled={isSubmitting || !token.value?.symbol || !balance.value}
+              disabled={
+                isSubmitting ||
+                !token.value?.symbol ||
+                !balance.value ||
+                balance.value?.int === '0'
+              }
               max={balance.value?.int}
             />
 
             <SubmitButton
               type="submit"
-              disabled={isSubmitting || statusWrite.isLoading}
+              isDisabled={
+                isSubmitting ||
+                statusWrite.isLoading ||
+                balance.value?.int === '0'
+              }
               isLoading={statusWrite.isLoading}
               className="mt-12 px-12"
             >
-              {`Swap ${values.value} ${token.value?.symbol} to ${values.value}
+              {balance.value?.int === '0'
+                ? `Not enough ${token.value?.symbol} balance`
+                : `Swap ${values.value} ${token.value?.symbol} to ${values.value}
               ${token.value?.symbol === 'sETH' ? 'sBCS' : 'sETH'}`}
             </SubmitButton>
           </form>

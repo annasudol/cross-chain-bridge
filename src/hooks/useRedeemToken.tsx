@@ -10,78 +10,80 @@ import {
 
 import { getBridgeAddress } from '@/constants/contract';
 import { parseToBigInt } from '@/lib/formatBigInt';
-import type { CallContractStatus, TxHash } from '@/types';
+import type { CallContractStatus, IStorage, TxHash } from '@/types';
 
 import useLocalStorage from './useLocalStorage';
 import { useReadData } from './useReadVault';
 
-interface SwapAmount {
-  amount: string;
-}
-
-interface SwapTokenReturn {
+interface RedeemValues extends IStorage {}
+interface RedeemTokenReturn {
   tx?: TxHash;
-  handleSwap: ({ amount }: SwapAmount) => void;
+  handleRedeem: ({ amount, address, txHash }: RedeemValues) => void;
   statusWrite: CallContractStatus;
   argsError: boolean;
 }
 
-const useSwapToken = (): SwapTokenReturn => {
+const useRedeemToken = (): RedeemTokenReturn => {
   const { chain, address } = useAccount();
   const bridgeAddress = getBridgeAddress(chain?.id);
   const { token, handleRefetchBalance } = useReadData();
-  const { setStorageValue } = useLocalStorage(
-    `redeem-${[chain?.id === 97 ? 11155111 : 97]}`,
-  );
-  const [amountToSwap, setAmountToSwap] = useState<string>();
-
+  const [txHashSwap, setTxHashSwap] = useState<string>();
+  const { removeStorageValue } = useLocalStorage(`redeem-${[chain?.id]}`);
   const {
-    data: swapeHash,
-    writeContract: swapToken,
+    data: redeemHash,
+    writeContract: redeemToken,
     isPending: writeLoading,
     isError: writeError,
   } = useWriteContract();
 
   const { isSuccess: txSuccess, isLoading: txLoading } =
     useWaitForTransactionReceipt({
-      hash: swapeHash,
+      hash: redeemHash,
       query: {
-        enabled: Boolean(swapeHash),
+        enabled: Boolean(redeemHash),
       },
     });
 
   useEffect(() => {
-    if (txSuccess && address && swapeHash && amountToSwap) {
+    if (txSuccess && address && txHashSwap) {
       handleRefetchBalance();
-      setStorageValue(amountToSwap, address, swapeHash);
+      removeStorageValue(txHashSwap);
     }
-  }, [txSuccess, swapeHash, address]);
+  }, [txSuccess, redeemHash, address]);
 
   return {
-    tx: swapeHash,
-    handleSwap: ({ amount }: SwapAmount) => {
-      const amountBint = parseToBigInt(
+    tx: redeemHash,
+    handleRedeem: ({ amount, txHash }: RedeemValues) => {
+      setTxHashSwap(txHash);
+      const amountBigInt = parseToBigInt(
         amount,
-        token?.value?.decimals as number,
+        token.value?.decimals as number,
       );
-      setAmountToSwap(amount);
-      swapToken({
+      redeemToken({
         address: bridgeAddress as Address,
         abi: [
           {
             inputs: [
+              { internalType: 'address', name: 'from', type: 'address' },
               { internalType: 'address', name: 'to', type: 'address' },
               { internalType: 'uint256', name: 'amount', type: 'uint256' },
+              { internalType: 'uint256', name: 'tx_hash', type: 'uint256' },
               { internalType: 'string', name: 'symbol', type: 'string' },
             ],
-            name: 'swap',
+            name: 'redeem',
             outputs: [],
             stateMutability: 'nonpayable',
             type: 'function',
           },
         ],
-        functionName: 'swap',
-        args: [address as Address, amountBint, token?.value?.symbol as string],
+        functionName: 'redeem',
+        args: [
+          address as Address,
+          address as Address,
+          amountBigInt,
+          BigInt(txHash),
+          token.value?.symbol as string,
+        ],
       });
     },
     argsError: !address || !token,
@@ -93,4 +95,4 @@ const useSwapToken = (): SwapTokenReturn => {
   };
 };
 
-export { useSwapToken };
+export { useRedeemToken };

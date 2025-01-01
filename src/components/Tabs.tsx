@@ -3,6 +3,7 @@ import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 import { FacetForm } from '@/components/form/FacetForm';
 import { SwapForm } from '@/components/form/SwapForm';
 
+import { RedeemForm } from './form/RedeemForm';
 import { Wrapper } from './Wrapper';
 
 export default function MyTabs() {
@@ -30,8 +31,10 @@ export default function MyTabs() {
         <Tab key="redeem" title="Redeem">
           <Card>
             <CardBody>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-              officia deserunt mollit anim id est laborum.
+              {' '}
+              <Wrapper>
+                <RedeemForm />
+              </Wrapper>
             </CardBody>
           </Card>
         </Tab>

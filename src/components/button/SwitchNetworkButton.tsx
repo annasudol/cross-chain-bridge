@@ -4,8 +4,9 @@ import MyButton from './MyButton';
 
 interface ISwitchNetworkBtn {
   label?: string;
+  children: React.ReactNode;
 }
-export const SwitchNetworkButton = ({ label }: ISwitchNetworkBtn) => {
+export const SwitchNetworkButton = ({ label, children }: ISwitchNetworkBtn) => {
   return (
     <ConnectButton.Custom>
       {({ account, chain, openChainModal, authenticationStatus, mounted }) => {
@@ -35,33 +36,14 @@ export const SwitchNetworkButton = ({ label }: ISwitchNetworkBtn) => {
                       <span className="mx-1 text-lg text-white">{label}</span>
                     )}
                     <MyButton
-                      onClick={openChainModal}
+                      onPress={openChainModal}
                       disabled={!connected || chain?.unsupported}
                       type="button"
-                      variant="bordered"
-                      // className="inline-flex items-center rounded-full border border-transparent bg-indigo-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-800 focus:ring-offset-2"
+                      size="lg"
+                      variant="solid"
+                      className="mt-12 w-full px-12"
                     >
-                      {chain?.hasIcon && (
-                        <div
-                          style={{
-                            background: chain.iconBackground,
-                            width: 12,
-                            height: 12,
-                            borderRadius: 999,
-                            overflow: 'hidden',
-                            marginRight: 4,
-                            marginTop: 4,
-                          }}
-                        >
-                          {chain.iconUrl && (
-                            <img
-                              alt={chain.name ?? 'Chain icon'}
-                              src={chain.iconUrl}
-                            />
-                          )}
-                        </div>
-                      )}
-                      {chain?.name}
+                      {children}
                     </MyButton>
                   </div>
                 );

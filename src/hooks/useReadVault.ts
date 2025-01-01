@@ -15,6 +15,7 @@ interface ReadVaultDataReturn {
     value?: TokenInfo;
     status: CallContractStatus;
   };
+  handleRefetchBalance: () => void;
 }
 
 export function useReadData(): ReadVaultDataReturn {
@@ -62,6 +63,7 @@ export function useReadData(): ReadVaultDataReturn {
     data: balanceBInt,
     isLoading: balanceBIntLoading,
     isError: balanceBIntError,
+    refetch: refetchBalance,
   } = useReadContract({
     abi: erc20Abi,
     address: tokenAddress,
@@ -69,13 +71,12 @@ export function useReadData(): ReadVaultDataReturn {
     args: [address as Address],
   });
   const balance: TokenValue | undefined =
-    balanceBInt && decimals
+    balanceBInt !== undefined && decimals
       ? {
           bigInt: balanceBInt,
           int: formatBigInt(balanceBInt, decimals),
         }
       : undefined;
-
   const token =
     symbol && decimals
       ? {
@@ -100,5 +101,6 @@ export function useReadData(): ReadVaultDataReturn {
         isSuccess: symbol !== undefined,
       },
     },
+    handleRefetchBalance: () => refetchBalance(),
   };
 }

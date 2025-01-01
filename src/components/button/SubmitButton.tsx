@@ -17,7 +17,7 @@ const SubmitButton = ({ children, ...props }: SubmitButtonProps) => {
   return (
     <div className="flex w-full flex-col text-center">
       <MyButton
-        className="min-w-56 opacity-45 disabled:opacity-50 disabled:hover:opacity-60"
+        className="min-w-56 disabled:opacity-50"
         isDisabled={!address || props.isDisabled}
         size="lg"
         variant="solid"
