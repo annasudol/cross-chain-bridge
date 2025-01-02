@@ -21,8 +21,8 @@ export const FacetForm = () => {
     return (
       <div>
         <MyAlert
-          message="Transaction is successful"
-          color="success"
+          title="Transaction is successful"
+          type="success"
           description={<TxLink txHash={tx} />}
         />
       </div>

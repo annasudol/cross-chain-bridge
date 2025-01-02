@@ -1,81 +1,85 @@
 'use client';
 
-// import 'react-toastify/dist/ReactToastify.min.css';
-
-// import '@/assets/notifications.css';
-import dayjs from 'dayjs';
 import type { PropsWithChildren } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { useAccount } from 'wagmi';
 
-import { StatusIcon } from '@/components/Alert';
-import type { Notification } from '@/types';
+import type { MyNotification } from '@/types';
 
-type NotificationOptions = Partial<Omit<Notification, 'message'>>;
-
-interface NotificationContext {
-  Add: (message: string, options?: NotificationOptions) => void;
+interface MyNotificationContext {
+  Add: (options: MyNotification) => void;
   Clear: () => void;
-  notifications: Notification[];
+  notifications: MyNotification[];
 }
 
-const defaultNotificationContext: NotificationContext = {
-  Add: (_message?: string, _options?: NotificationOptions) => {},
+const defaultMyNotificationContext: MyNotificationContext = {
+  Add: (_options?: MyNotification) => {},
   Clear: () => {},
   notifications: [],
 };
 
-const MyNotificationContext = createContext(defaultNotificationContext);
+const MyMyNotificationContext = createContext(defaultMyNotificationContext);
 
-export const useNotifications = () => {
-  const context = useContext(MyNotificationContext);
+export const useMyNotifications = () => {
+  const context = useContext(MyMyNotificationContext);
   if (!context) {
     throw new Error(
-      'useNotifications must be used within a NotificationProvider',
+      'useMyNotifications must be used within a MyNotificationProvider',
     );
   }
 
   return context;
 };
 
-export function NotificationProvider(props: PropsWithChildren) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const { address } = useAccount();
+export function MyNotificationProvider(props: PropsWithChildren) {
+  const [notifications, setNotifications] = useState<MyNotification[]>([]);
 
   useEffect(() => {
-    const storedNotifications = localStorage?.getItem('notifications');
-    if (storedNotifications) {
-      setNotifications(JSON.parse(storedNotifications));
+    const storedMyNotifications = localStorage?.getItem('MyNotifications');
+    if (storedMyNotifications) {
+      setNotifications(JSON.parse(storedMyNotifications));
     }
   }, []);
 
-  function Add(message: string, options?: NotificationOptions) {
-    const notification: Notification = {
-      message,
-      type: options?.type || 'info',
-      timestamp: options?.timestamp || dayjs().valueOf(),
-      from: options?.from || address,
-      ...options,
+  function Add(options: MyNotification) {
+    const myNotification: MyNotification = {
+      title: options.title,
+      id: options.id || new Date().getTime().toString(),
+      type: options?.type || 'default',
     };
     localStorage.setItem(
-      'notifications',
-      JSON.stringify([...notifications, notification]),
+      'MyNotifications',
+      JSON.stringify([...notifications, myNotification]),
     );
-    setNotifications([...notifications, notification]);
-    toast(message, {
-      type: notification.type,
-      icon: <StatusIcon type={notification.type || 'info'} />,
-    });
+    setNotifications([...notifications, myNotification]);
+    if (options.type === 'success') {
+      toast.success(myNotification.title, {
+        toastId: myNotification.id,
+      });
+    }
+    if (options.type === 'danger') {
+      toast.error(myNotification.title, {
+        toastId: myNotification.id,
+      });
+    }
+    if (options.type === 'warning') {
+      toast.warning(myNotification.title, {
+        toastId: myNotification.id,
+      });
+    } else {
+      toast.info(myNotification.title, {
+        toastId: myNotification.id,
+      });
+    }
   }
 
   function Clear() {
-    localStorage.removeItem('notifications');
+    localStorage.removeItem('MyNotifications');
     setNotifications([]);
   }
 
   return (
-    <MyNotificationContext.Provider value={{ Add, Clear, notifications }}>
+    <MyMyNotificationContext.Provider value={{ Add, Clear, notifications }}>
       {props.children}
       <ToastContainer
         limit={20}
@@ -87,6 +91,6 @@ export function NotificationProvider(props: PropsWithChildren) {
         }
         className={() => 'flex text-sm gap-2 px-4 py-2'}
       />
-    </MyNotificationContext.Provider>
+    </MyMyNotificationContext.Provider>
   );
 }

@@ -1,16 +1,12 @@
 import { Alert } from '@nextui-org/react';
 import React from 'react';
 
-interface MyAlertProps {
-  message: string;
-  color: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
-  description?: React.ReactNode;
-}
+import type { MyNotification } from '@/types';
 
-export function MyAlert({ message, color, description }: MyAlertProps) {
+export function MyAlert({ title, type, description }: MyNotification) {
   return (
-    <div className="my-3 flex w-full items-center">
-      <Alert color={color} title={message} description={description} />
+    <div className="flex w-full items-center">
+      <Alert color={type} title={title} description={description} />
     </div>
   );
 }

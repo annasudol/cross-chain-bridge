@@ -49,7 +49,7 @@ export const RedeemForm = () => {
   if (!txToRedeem) {
     return (
       <div className="mb-12">
-        <MyAlert message="No transactions to redeem" color="warning" />
+        <MyAlert title="No transactions to redeem" type="warning" />
       </div>
     );
   }
@@ -65,8 +65,8 @@ export const RedeemForm = () => {
 
       {tx && statusWrite.isSuccess && (
         <MyAlert
-          message="Transaction is successful"
-          color="success"
+          title="Transaction is successful"
+          type="success"
           description={<TxLink txHash={tx} />}
         />
       )}

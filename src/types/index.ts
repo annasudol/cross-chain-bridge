@@ -2,6 +2,7 @@ export enum ChainName {
   Sepolia = 'Sepolia',
 }
 
+export type ChainID = 11155111 | 97;
 export enum TokenSymbol {
   rETH = 'rETH',
   WETH = 'WETH',
@@ -61,12 +62,17 @@ export interface IStorage {
   txHash: string;
 }
 
-export type NotificationType = 'info' | 'success' | 'warning' | 'error';
+export type MyNotificationType =
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'danger';
 
-export interface Notification {
-  type?: NotificationType;
-  message: string;
-  timestamp: number;
-  from?: string;
-  href?: string;
+export interface MyNotification {
+  title: string;
+  type?: MyNotificationType;
+  description?: React.ReactNode;
+  id?: string;
 }

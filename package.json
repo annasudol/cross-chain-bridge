@@ -34,8 +34,6 @@
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.13",
-    "days": "^1.1.1",
     "ethereumjs-wallet": "^1.0.2",
     "ethers": "^6.13.4",
     "formik": "^2.4.6",

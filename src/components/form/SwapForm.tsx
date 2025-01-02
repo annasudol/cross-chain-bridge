@@ -8,13 +8,14 @@ import { MyAlert } from '@/components/MyAlert';
 import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
-import { useNotifications } from '@/providers/Notifications';
+import { useMyNotifications } from '@/providers/Notifications';
+import type { ChainID } from '@/types';
 
 import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
 import { Loading } from '../Loading';
 
 export const SwapForm = () => {
-  const { Add } = useNotifications();
+  const { Add } = useMyNotifications();
 
   const { balance, token } = useReadData();
 
@@ -23,10 +24,12 @@ export const SwapForm = () => {
   const { chain } = useAccount();
   useEffect(() => {
     if (tx && statusWrite.isSuccess) {
-      Add('Transaction successfully completed!', {
+      Add({
+        title: 'Transaction is successful',
         type: 'success',
-        from: 'vitalik.eth',
-        href: tx,
+        description: (
+          <TxLink txHash={tx} chainId={(chain?.id as ChainID) || undefined} />
+        ),
       });
     }
   }, [statusWrite.isSuccess, tx]);
@@ -35,8 +38,8 @@ export const SwapForm = () => {
     return (
       <div className="flex flex-col items-stretch">
         <MyAlert
-          message="Transaction is successful"
-          color="success"
+          title="Transaction is successful"
+          type="success"
           description={<TxLink txHash={tx} />}
         />
         <SwitchNetworkButton>
