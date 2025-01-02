@@ -47,6 +47,7 @@ export function MyNotificationProvider(props: PropsWithChildren) {
       title: options.title,
       id: options.id || new Date().getTime().toString(),
       type: options?.type || 'default',
+      tx: options.tx,
     };
     localStorage.setItem(
       'MyNotifications',
@@ -68,15 +69,18 @@ export function MyNotificationProvider(props: PropsWithChildren) {
     if (options.type === 'danger') {
       return toast.error(myNotification.title, {
         toastId: myNotification.id,
+        position: 'top-center',
       });
     }
     if (options.type === 'warning') {
       return toast.warning(myNotification.title, {
         toastId: myNotification.id,
+        position: 'top-center',
       });
     }
     return toast.info(myNotification.title, {
       toastId: myNotification.id,
+      position: 'top-center',
     });
   }
 

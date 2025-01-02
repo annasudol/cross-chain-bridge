@@ -37,7 +37,7 @@ export const SwitchNetworkButton = ({ label, children }: ISwitchNetworkBtn) => {
                     )}
 
                     <MyButton
-                      className="min-w-56 bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 text-center font-semibold text-white disabled:opacity-50"
+                      className="w-full min-w-56 bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 text-center font-semibold text-white disabled:opacity-50"
                       disabled={!connected || chain?.unsupported}
                       size="lg"
                       color="primary"

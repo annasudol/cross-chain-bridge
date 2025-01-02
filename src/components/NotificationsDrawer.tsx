@@ -69,7 +69,7 @@ export function MyNotificationsDrawer() {
                   variant="bordered"
                   iconRight={ButtonRightIcon.Trash}
                 >
-                  Clear All MyNotifications
+                  Clear All Notifications
                 </MyButton>
               </DrawerFooter>
             </>

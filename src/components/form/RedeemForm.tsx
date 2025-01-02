@@ -29,7 +29,7 @@ export const RedeemForm = () => {
         setTxToRedeem(results[results.length - 1]);
       }
     }
-  }, [localstoragestate]);
+  }, [localstoragestate, address]);
 
   useEffect(() => {
     if (tx && statusWrite.isSuccess && txSwapHash) {
