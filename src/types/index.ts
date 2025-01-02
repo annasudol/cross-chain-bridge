@@ -60,3 +60,13 @@ export interface IStorage {
   address: Address;
   txHash: string;
 }
+
+export type NotificationType = 'info' | 'success' | 'warning' | 'error';
+
+export interface Notification {
+  type?: NotificationType;
+  message: string;
+  timestamp: number;
+  from?: string;
+  href?: string;
+}

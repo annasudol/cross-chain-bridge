@@ -1,6 +1,6 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-import MyButton from '@/components/button/MyButton';
+import MyButton, { ButtonRightIcon } from '@/components/button/MyButton';
 
 const MyConnectButton = () => {
   return (
@@ -37,9 +37,11 @@ const MyConnectButton = () => {
               if (!connected) {
                 return (
                   <MyButton
-                    onClick={openConnectModal}
+                    onPress={openConnectModal}
                     type="button"
-                    variant="bordered"
+                    variant="solid"
+                    className="px-5"
+                    iconRight={ButtonRightIcon.Wallet}
                   >
                     Connect Wallet
                   </MyButton>
@@ -48,9 +50,9 @@ const MyConnectButton = () => {
               if (chain.unsupported) {
                 return (
                   <MyButton
-                    onClick={openChainModal}
+                    onPress={openChainModal}
                     type="button"
-                    variant="bordered"
+                    customVariant="gradient"
                   >
                     Wrong network
                   </MyButton>
@@ -79,9 +81,9 @@ const MyConnectButton = () => {
                     )}
                   </button>
                   <MyButton
-                    onClick={openAccountModal}
+                    onPress={openAccountModal}
                     type="button"
-                    variant="bordered"
+                    customVariant="gradient"
                   >
                     {account.displayName}
                     {account.displayBalance

@@ -9,9 +9,14 @@ const transactionLink: Record<ChainName, string> = {
 interface TxLinkProps {
   txHash: string;
   chain?: ChainName;
+  children?: React.ReactNode;
 }
 
-export function TxLink({ txHash, chain = ChainName.Sepolia }: TxLinkProps) {
+export function TxLink({
+  txHash,
+  chain = ChainName.Sepolia,
+  children,
+}: TxLinkProps) {
   const tokenLink = transactionLink[chain] + txHash;
-  return <Link href={tokenLink}>Transaction dedails</Link>;
+  return <Link href={tokenLink}>{children || 'Transaction dedails'}</Link>;
 }

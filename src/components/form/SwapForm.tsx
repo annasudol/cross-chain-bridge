@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
@@ -8,16 +8,28 @@ import { MyAlert } from '@/components/MyAlert';
 import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
+import { useNotifications } from '@/providers/Notifications';
 
 import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
 import { Loading } from '../Loading';
 
 export const SwapForm = () => {
+  const { Add } = useNotifications();
+
   const { balance, token } = useReadData();
 
   const { handleSwap, statusWrite, tx } = useSwapToken();
 
   const { chain } = useAccount();
+  useEffect(() => {
+    if (tx && statusWrite.isSuccess) {
+      Add('Transaction successfully completed!', {
+        type: 'success',
+        from: 'vitalik.eth',
+        href: tx,
+      });
+    }
+  }, [statusWrite.isSuccess, tx]);
 
   if (tx && statusWrite.isSuccess) {
     return (
