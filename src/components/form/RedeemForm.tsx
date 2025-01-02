@@ -33,10 +33,15 @@ export const RedeemForm = () => {
 
   useEffect(() => {
     if (tx && statusWrite.isSuccess && txSwapHash && address) {
+      console.log('txSwapHash', txSwapHash);
       // Remove the successful transaction from local storage
       setStorageValue(address, txSwapHash);
 
       // Optionally, perform any additional state updates here
+    } else {
+      console.log('txSwapHash', txSwapHash);
+      console.log('tx', tx);
+      console.log('statusWrite.isSuccess', statusWrite);
     }
   }, [tx, statusWrite.isSuccess]);
 
