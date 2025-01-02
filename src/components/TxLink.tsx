@@ -8,8 +8,8 @@ const transactionLink: Record<ChainID, string> = {
 };
 
 const transactionName: Record<ChainID, string> = {
-  11155111: 'etherscan',
-  97: 'bscscan',
+  11155111: 'Etherscan',
+  97: 'Bscscan',
 };
 
 interface TxLinkProps {
@@ -19,7 +19,7 @@ interface TxLinkProps {
 
 export function TxLink({ txHash, chainId = 97 }: TxLinkProps) {
   const tokenLink = transactionLink[chainId] + txHash;
-  const txLinkType = transactionName[chainId];
+  const txLinkType = `${transactionName[chainId]} link`;
 
   return <Link href={tokenLink}>{txLinkType}</Link>;
 }

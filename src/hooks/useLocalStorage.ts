@@ -15,17 +15,20 @@ const useLocalStorage = (key: string) => {
     }
   });
   const setStorageValue = useCallback(
-    (amount: string, address: Address, txHash: string) => {
-      let valueToStore;
+    (address: Address, txHash: string, amount?: string) => {
+      let valueToStore: IStorage[] = [];
       try {
         if (localstoragestate && Object.values(localstoragestate).length > 0) {
           valueToStore =
             localstoragestate.filter((v: IStorage) => v.txHash === txHash)
               .length > 0
               ? localstoragestate.filter((v: IStorage) => v.txHash !== txHash)
-              : [...localstoragestate, { amount, address, txHash }];
+              : [
+                  ...localstoragestate,
+                  { amount: amount || '0', address, txHash },
+                ];
         } else {
-          valueToStore = [{ amount, address, txHash }];
+          valueToStore = [{ amount: amount || '0', address, txHash }];
         }
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
 

@@ -15,7 +15,7 @@ export const RedeemForm = () => {
   const [txToRedeem, setTxToRedeem] = React.useState<IStorage>();
   const [txSwapHash, setTxSwapHash] = React.useState<string>();
   const { handleRedeem, tx, statusWrite } = useRedeemToken();
-  const { localstoragestate, removeStorageValue } = useLocalStorage(
+  const { localstoragestate, setStorageValue } = useLocalStorage(
     `redeem-${[chain?.id]}`,
   );
 
@@ -32,13 +32,13 @@ export const RedeemForm = () => {
   }, [localstoragestate, address]);
 
   useEffect(() => {
-    if (tx && statusWrite.isSuccess && txSwapHash) {
+    if (tx && statusWrite.isSuccess && txSwapHash && address) {
       // Remove the successful transaction from local storage
-      removeStorageValue(txSwapHash);
+      setStorageValue(address, txSwapHash);
 
       // Optionally, perform any additional state updates here
     }
-  }, [tx, statusWrite.isSuccess, removeStorageValue]);
+  }, [tx, statusWrite.isSuccess]);
 
   const handleToRedeem = (v: IStorage) => {
     setTxSwapHash(v.txHash);
