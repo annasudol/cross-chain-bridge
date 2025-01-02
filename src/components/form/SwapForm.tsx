@@ -4,8 +4,6 @@ import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
-import { MyAlert } from '@/components/MyAlert';
-import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
 import { useMyNotifications } from '@/providers/Notifications';
@@ -25,28 +23,18 @@ export const SwapForm = () => {
   useEffect(() => {
     if (tx && statusWrite.isSuccess) {
       Add({
-        title: 'Transaction is successful',
+        title: 'Swap Transaction is successful',
         type: 'success',
-        description: (
-          <TxLink txHash={tx} chainId={(chain?.id as ChainID) || undefined} />
-        ),
+        tx: { href: tx, chainid: chain?.id as ChainID },
       });
     }
   }, [statusWrite.isSuccess, tx]);
 
   if (tx && statusWrite.isSuccess) {
     return (
-      <div className="flex flex-col items-stretch">
-        <MyAlert
-          title="Transaction is successful"
-          type="success"
-          description={<TxLink txHash={tx} />}
-        />
-        <SwitchNetworkButton>
-          Click to change network to{' '}
-          {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
-        </SwitchNetworkButton>
-      </div>
+      <SwitchNetworkButton>
+        Click to change network to {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
+      </SwitchNetworkButton>
     );
   }
   if (token.status.isLoading) {

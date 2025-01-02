@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
 import { MyAlert } from '@/components/MyAlert';
-import { TxLink } from '@/components/TxLink';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadVault';
 import { useRedeemToken } from '@/hooks/useRedeemToken';
@@ -62,14 +61,6 @@ export const RedeemForm = () => {
       >
         Redeem {txToRedeem.amount} {token?.value?.symbol}
       </SubmitButton>
-
-      {tx && statusWrite.isSuccess && (
-        <MyAlert
-          title="Transaction is successful"
-          type="success"
-          description={<TxLink txHash={tx} />}
-        />
-      )}
     </div>
   );
 };

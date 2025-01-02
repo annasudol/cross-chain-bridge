@@ -11,9 +11,7 @@ const useLocalStorage = (key: string) => {
       const value = window.localStorage.getItem(key);
       return value ? JSON.parse(value) : undefined;
     } catch (err) {
-      console.log(err);
-      return undefined;
-      // throw new Error('Error getting value');
+      throw new Error('Error getting value');
     }
   });
   const setStorageValue = useCallback(

@@ -22,7 +22,7 @@ export function MyNotificationsDrawer() {
     <>
       <Button onPress={onOpen} variant="light">
         <Badge color="primary" content={notifications.length}>
-          <FaBell size={10} />
+          <FaBell size={20} />
         </Badge>
       </Button>
       <Drawer isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -46,8 +46,7 @@ export function MyNotificationsDrawer() {
                       {notifications.map((n, index: number) => (
                         <MyAlert
                           key={`MyNotification_${index}_${n.id}`}
-                          type={n.type || 'default'}
-                          title={n.title}
+                          {...n}
                         />
                       ))}
                     </div>

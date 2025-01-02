@@ -73,6 +73,11 @@ export type MyNotificationType =
 export interface MyNotification {
   title: string;
   type?: MyNotificationType;
-  description?: React.ReactNode;
+  tx?: TxInfo;
   id?: string;
+}
+
+export interface TxInfo {
+  href: string;
+  chainid: ChainID;
 }

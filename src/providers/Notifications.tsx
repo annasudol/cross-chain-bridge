@@ -4,6 +4,7 @@ import type { PropsWithChildren } from 'react';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 
+import { TxLink } from '@/components/TxLink';
 import type { MyNotification } from '@/types';
 
 interface MyNotificationContext {
@@ -53,24 +54,30 @@ export function MyNotificationProvider(props: PropsWithChildren) {
     );
     setNotifications([...notifications, myNotification]);
     if (options.type === 'success') {
-      toast.success(myNotification.title, {
-        toastId: myNotification.id,
-      });
+      return toast.success(
+        <>
+          <div>
+            <p>{options.title}</p>
+            {options.tx && (
+              <TxLink txHash={options.tx.href} chainId={options.tx.chainid} />
+            )}
+          </div>
+        </>,
+      );
     }
     if (options.type === 'danger') {
-      toast.error(myNotification.title, {
+      return toast.error(myNotification.title, {
         toastId: myNotification.id,
       });
     }
     if (options.type === 'warning') {
-      toast.warning(myNotification.title, {
-        toastId: myNotification.id,
-      });
-    } else {
-      toast.info(myNotification.title, {
+      return toast.warning(myNotification.title, {
         toastId: myNotification.id,
       });
     }
+    return toast.info(myNotification.title, {
+      toastId: myNotification.id,
+    });
   }
 
   function Clear() {
