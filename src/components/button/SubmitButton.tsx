@@ -24,7 +24,9 @@ const SubmitButton = ({ children, ...props }: SubmitButtonProps) => {
         variant="solid"
         onPress={props.onPress}
         isLoading={props.isLoading}
-        iconRight={!props.isDisabled ? ButtonRightIcon.ArrowRight : undefined}
+        iconRight={
+          !props.isDisabled && address ? ButtonRightIcon.ArrowRight : undefined
+        }
       >
         {!address ? 'Wallet is not connected' : children}
       </MyButton>
