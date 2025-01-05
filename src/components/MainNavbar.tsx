@@ -1,7 +1,6 @@
 import { Link, Navbar } from '@nextui-org/react';
 
 import MyConnectButton from '@/components/button/MyConnectButton';
-import { MyNotificationsDrawer } from '@/components/NotificationsDrawer';
 import { AppConfig } from '@/config/AppConfig';
 
 const MainNavbar = () => (
@@ -10,10 +9,7 @@ const MainNavbar = () => (
       <nav className="py-6">
         <Link href="/">{AppConfig.emoji}</Link>
       </nav>
-      <div className="flex items-center">
-        <MyConnectButton />
-        <MyNotificationsDrawer />
-      </div>
+      <MyConnectButton />
     </div>
   </Navbar>
 );

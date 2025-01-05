@@ -1,45 +1,56 @@
+import type { FormikErrors } from 'formik';
 import { Formik } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
+import { MyAlert } from '@/components/MyAlert';
+import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
-import { useMyNotifications } from '@/providers/Notifications';
-import type { ChainID } from '@/types';
 
 import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
 import { Loading } from '../Loading';
 
 export const SwapForm = () => {
-  const { Add } = useMyNotifications();
-
   const { balance, token } = useReadData();
 
   const { handleSwap, statusWrite, tx } = useSwapToken();
 
   const { chain } = useAccount();
-  useEffect(() => {
-    if (tx && statusWrite.isSuccess) {
-      Add({
-        title: 'Swap Transaction is successful',
-        type: 'success',
-        tx: { href: tx, chainid: chain?.id as ChainID },
-      });
-    }
-  }, [statusWrite.isSuccess, tx]);
 
   if (tx && statusWrite.isSuccess) {
     return (
-      <SwitchNetworkButton>
-        Click to change network to {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
-      </SwitchNetworkButton>
+      <div className="flex flex-col items-stretch">
+        <MyAlert
+          message="Transaction is successful"
+          color="success"
+          description={<TxLink txHash={tx} />}
+        />
+        <SwitchNetworkButton>
+          Click to change network to{' '}
+          {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
+        </SwitchNetworkButton>
+      </div>
     );
   }
   if (token.status.isLoading) {
     return <Loading />;
   }
+
+  const getButtonText = (
+    values: string,
+    errors: FormikErrors<{ value: string }>,
+  ) => {
+    if (balance.value?.int === '0') {
+      return `Not enough ${token.value?.symbol} balance`;
+    }
+    if (!errors.value) {
+      return `Swap ${values} ${token.value?.symbol}`;
+    }
+    return `Swap ... ${token.value?.symbol}`;
+  };
 
   return (
     <div>
@@ -101,15 +112,13 @@ export const SwapForm = () => {
               isDisabled={
                 isSubmitting ||
                 statusWrite.isLoading ||
+                Boolean(errors.value) ||
                 balance.value?.int === '0'
               }
               isLoading={statusWrite.isLoading}
               className="mt-12 px-12"
             >
-              {balance.value?.int === '0'
-                ? `Not enough ${token.value?.symbol} balance`
-                : `Swap ${values.value} ${token.value?.symbol} to ${values.value}
-              ${token.value?.symbol === 'sETH' ? 'sBCS' : 'sETH'}`}
+              {getButtonText(values.value, errors)}
             </SubmitButton>
           </form>
         )}

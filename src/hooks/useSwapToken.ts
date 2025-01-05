@@ -53,7 +53,7 @@ const useSwapToken = (): SwapTokenReturn => {
   useEffect(() => {
     if (txSuccess && address && swapeHash && amountToSwap) {
       handleRefetchBalance();
-      setStorageValue(address, swapeHash, amountToSwap);
+      setStorageValue(amountToSwap, address, swapeHash);
     }
   }, [txSuccess, swapeHash, address]);
 

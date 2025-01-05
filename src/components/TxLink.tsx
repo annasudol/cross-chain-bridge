@@ -1,25 +1,17 @@
 import { Link } from '@nextui-org/react';
 
-import type { ChainID } from '@/types';
+import { ChainName } from '@/types';
 
-const transactionLink: Record<ChainID, string> = {
-  11155111: 'https://sepolia.etherscan.io/tx/',
-  97: 'https://testnet.bscscan.com/tx/',
-};
-
-const transactionName: Record<ChainID, string> = {
-  11155111: 'Etherscan',
-  97: 'Bscscan',
+const transactionLink: Record<ChainName, string> = {
+  [ChainName.Sepolia]: 'https://sepolia.etherscan.io/tx/',
 };
 
 interface TxLinkProps {
   txHash: string;
-  chainId?: ChainID;
+  chain?: ChainName;
 }
 
-export function TxLink({ txHash, chainId = 97 }: TxLinkProps) {
-  const tokenLink = transactionLink[chainId] + txHash;
-  const txLinkType = `${transactionName[chainId]} link`;
-
-  return <Link href={tokenLink}>{txLinkType}</Link>;
+export function TxLink({ txHash, chain = ChainName.Sepolia }: TxLinkProps) {
+  const tokenLink = transactionLink[chain] + txHash;
+  return <Link href={tokenLink}>Transaction dedails</Link>;
 }

@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
-import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { MyAlert } from '@/components/MyAlert';
+import { TxLink } from '@/components/TxLink';
 import { useFacetToken } from '@/hooks/useFacetToken';
 import { useReadData } from '@/hooks/useReadVault';
-import type { ChainID } from '@/types';
 
 export const FacetForm = () => {
   const { token, handleRefetchBalance } = useReadData();
-  const { chain } = useAccount();
 
   const { handleFacet, tx, statusWrite } = useFacetToken();
 
@@ -19,13 +17,13 @@ export const FacetForm = () => {
     }
   }, [tx, statusWrite]);
 
-  if (tx && statusWrite.isSuccess && chain?.id) {
+  if (tx) {
     return (
       <div>
         <MyAlert
-          title="Transaction is successful"
-          type="success"
-          tx={{ href: tx, chainid: chain.id as ChainID }}
+          message="Transaction is successful"
+          color="success"
+          description={<TxLink txHash={tx} />}
         />
       </div>
     );
@@ -42,7 +40,6 @@ export const FacetForm = () => {
       <SubmitButton
         onPress={() => handleFacet()}
         isLoading={statusWrite.isLoading}
-        className="mt-12 px-12"
       >
         {`Click to receive ${token.value?.symbol}`}
       </SubmitButton>

@@ -39,8 +39,8 @@ const MyConnectButton = () => {
                   <MyButton
                     onPress={openConnectModal}
                     type="button"
-                    variant="solid"
-                    className="px-5"
+                    variant="bordered"
+                    color="primary"
                     iconRight={ButtonRightIcon.Wallet}
                   >
                     Connect Wallet
@@ -52,7 +52,7 @@ const MyConnectButton = () => {
                   <MyButton
                     onPress={openChainModal}
                     type="button"
-                    customVariant="gradient"
+                    variant="bordered"
                   >
                     Wrong network
                   </MyButton>
@@ -83,7 +83,8 @@ const MyConnectButton = () => {
                   <MyButton
                     onPress={openAccountModal}
                     type="button"
-                    customVariant="gradient"
+                    variant="bordered"
+                    color="primary"
                   >
                     {account.displayName}
                     {account.displayBalance

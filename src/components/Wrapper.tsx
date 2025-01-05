@@ -11,7 +11,7 @@ export function Wrapper({ children }: { children: React.ReactNode }) {
   const { address, chain } = useAccount();
 
   return (
-    <div className="flex h-60 flex-col justify-between py-4 sm:px-4">
+    <div className="flex h-56 flex-col justify-between py-4 sm:px-4">
       <div className="text-sm text-white">
         {address && chain?.id && (
           <>

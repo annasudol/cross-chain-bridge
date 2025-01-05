@@ -2,7 +2,6 @@ export enum ChainName {
   Sepolia = 'Sepolia',
 }
 
-export type ChainID = 11155111 | 97;
 export enum TokenSymbol {
   rETH = 'rETH',
   WETH = 'WETH',
@@ -60,24 +59,4 @@ export interface IStorage {
   amount: string;
   address: Address;
   txHash: string;
-}
-
-export type MyNotificationType =
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'warning'
-  | 'danger';
-
-export interface MyNotification {
-  title: string;
-  type?: MyNotificationType;
-  tx?: TxInfo;
-  id?: string;
-}
-
-export interface TxInfo {
-  href: string;
-  chainid: ChainID;
 }

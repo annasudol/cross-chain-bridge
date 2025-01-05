@@ -10,35 +10,33 @@ const useLocalStorage = (key: string) => {
     try {
       const value = window.localStorage.getItem(key);
       return value ? JSON.parse(value) : undefined;
-    } catch (err) {
+    } catch {
       throw new Error('Error getting value');
     }
   });
-  const setStorageValue = useCallback(
-    (address: Address, txHash: string, amount?: string) => {
-      let valueToStore: IStorage[] = [];
-      try {
-        if (localstoragestate && Object.values(localstoragestate).length > 0) {
-          valueToStore =
-            localstoragestate.filter((v: IStorage) => v.txHash === txHash)
-              .length > 0
-              ? localstoragestate.filter((v: IStorage) => v.txHash !== txHash)
-              : [
-                  ...localstoragestate,
-                  { amount: amount || '0', address, txHash },
-                ];
-        } else {
-          valueToStore = [{ amount: amount || '0', address, txHash }];
-        }
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
-
-        setLocalStorageState(valueToStore);
-      } catch {
-        throw new Error('Error setting value');
+  const setStorageValue = (
+    amount: string,
+    address: Address,
+    txHash: string,
+  ) => {
+    let valueToStore;
+    try {
+      if (localstoragestate && Object.values(localstoragestate).length > 0) {
+        valueToStore =
+          localstoragestate.filter((v: IStorage) => v.txHash === txHash)
+            .length > 0
+            ? localstoragestate.filter((v: IStorage) => v.txHash !== txHash)
+            : [...localstoragestate, { amount, address, txHash }];
+      } else {
+        valueToStore = [{ amount, address, txHash }];
       }
-    },
-    [key, localstoragestate],
-  );
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+
+      setLocalStorageState(valueToStore);
+    } catch {
+      throw new Error('Error setting value');
+    }
+  };
 
   const removeStorageValue = useCallback(
     (txHash: string) => {
