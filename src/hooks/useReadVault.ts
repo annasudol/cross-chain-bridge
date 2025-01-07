@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import type { Address } from 'viem';
 import { erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
@@ -70,6 +71,7 @@ export function useReadData(): ReadVaultDataReturn {
     functionName: 'balanceOf',
     args: [address as Address],
   });
+  const handleRefetchBalance = useCallback(() => refetchBalance(), []);
   const balance: TokenValue | undefined =
     balanceBInt !== undefined && decimals
       ? {
@@ -101,6 +103,6 @@ export function useReadData(): ReadVaultDataReturn {
         isSuccess: symbol !== undefined,
       },
     },
-    handleRefetchBalance: () => refetchBalance(),
+    handleRefetchBalance,
   };
 }

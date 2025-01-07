@@ -1,32 +1,57 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { useFacetToken } from '@/hooks/useFacetToken';
 import { useReadData } from '@/hooks/useReadVault';
 
+import { TxAlert } from '../TxAlert';
+
 export const FacetForm = () => {
-  const { token, handleRefetchBalance } = useReadData();
+  const { token } = useReadData();
+  const { chain } = useAccount();
 
-  const { handleFacet, tx, mutateStatus } = useFacetToken();
+  const { handleFacet, hash, mutateStatus } = useFacetToken();
 
-  useEffect(() => {
-    if (tx && mutateStatus.isSuccess) {
-      handleRefetchBalance();
+  if (hash) {
+    if (mutateStatus?.isLoading) {
+      return (
+        <div className="flex h-20 flex-col items-stretch">
+          <TxAlert
+            message="Transaction is pending"
+            color="primary"
+            hash={hash}
+            chain={chain}
+          />
+        </div>
+      );
     }
-  }, [tx, mutateStatus]);
+    if (mutateStatus?.isError) {
+      return (
+        <div className="flex h-20 flex-col items-stretch">
+          <TxAlert
+            message="Recicing token failed"
+            color="danger"
+            hash={hash}
+            chain={chain}
+          />
+        </div>
+      );
+    }
 
-  if (tx) {
-    return (
-      <div>
-        {/* <MyAlert
-          message="Transaction is successful"
-          color="success"
-          description={<TxLink hash={tx} />}
-        /> */}
-      </div>
-    );
+    if (mutateStatus?.isSuccess) {
+      return (
+        <div className="flex h-64 flex-col items-stretch">
+          <TxAlert
+            message="Redeem token is successful"
+            color="success"
+            hash={hash}
+            chain={chain}
+          />
+        </div>
+      );
+    }
   }
-
   return (
     <div>
       <p className="text-sm text-gray-400">

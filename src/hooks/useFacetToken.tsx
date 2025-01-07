@@ -14,7 +14,7 @@ import type { CallContractStatus } from '@/types';
 import { useReadData } from './useReadVault';
 
 interface FacetTokenReturn {
-  tx?: Hash;
+  hash?: Hash;
   handleFacet: () => void;
   mutateStatus: CallContractStatus;
   argsError: boolean;
@@ -47,7 +47,7 @@ const useFacetToken = (): FacetTokenReturn => {
   }, [txSuccess]);
 
   return {
-    tx: facetHash,
+    hash: facetHash,
     handleFacet: () => {
       facetToken({
         address: bridgeAddress as Address,

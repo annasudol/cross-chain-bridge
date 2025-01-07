@@ -15,30 +15,34 @@ const useLocalStorage = (key: string) => {
         try {
           setLocalStorageState(JSON.parse(value));
         } catch {
-          console.error('Error parsing localStorage value:', value);
+          // eslint-disable-next-line no-console
+          throw new Error('Error parsing localStorage value');
         }
       }
     }
   }, [key]);
 
-  const setStorageValue = (amount: string, address: Address, hash: string) => {
-    try {
-      if (typeof window !== 'undefined') {
-        const valueToStore = { amount, address, hash };
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        setLocalStorageState(valueToStore);
+  const setStorageValue = useCallback(
+    (amount: string, address: Address, hash: string) => {
+      try {
+        if (typeof window !== 'undefined') {
+          const valueToStore = { amount, address, hash };
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+          setLocalStorageState(valueToStore);
+        }
+      } catch {
+        throw new Error('Error setting value');
       }
-    } catch {
-      throw new Error('Error setting value');
-    }
-  };
+    },
+    [],
+  );
 
   const removeStorageValue = useCallback(
     (hash: string) => {
       try {
         if (typeof window !== 'undefined') {
           if (localstoragestate && localstoragestate.hash === hash) {
-            window.localStorage.removeItem(key); // Remove the key instead of setting it to "undefined"
+            window.localStorage.removeItem(key);
             setLocalStorageState(undefined);
           }
         } else {
