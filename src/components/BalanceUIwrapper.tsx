@@ -6,7 +6,7 @@ import { useReadData } from '@/hooks/useReadVault';
 
 import { Loading } from './Loading';
 
-export function Wrapper({ children }: { children: React.ReactNode }) {
+export function BalanceUIwrapper({ children }: { children: React.ReactNode }) {
   const { balance, token } = useReadData();
   const { address, chain } = useAccount();
 
