@@ -12,7 +12,6 @@ const HomePage = () => {
 
   const { localstoragestate } = useLocalStorage(`redeem-${[chain?.id]}`);
 
-  // Redirect if local storage is not empty
   useEffect(() => {
     if (localstoragestate?.hash) {
       router.push(`/redeem/${localstoragestate.hash}`);

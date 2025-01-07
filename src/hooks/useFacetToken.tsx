@@ -32,13 +32,16 @@ const useFacetToken = (): FacetTokenReturn => {
     isError: writeError,
   } = useWriteContract();
 
-  const { isSuccess: txSuccess, isLoading: txLoading } =
-    useWaitForTransactionReceipt({
-      hash: facetHash,
-      query: {
-        enabled: Boolean(facetHash),
-      },
-    });
+  const {
+    isSuccess: txSuccess,
+    isLoading: txLoading,
+    isError: txError,
+  } = useWaitForTransactionReceipt({
+    hash: facetHash,
+    query: {
+      enabled: Boolean(facetHash),
+    },
+  });
 
   useEffect(() => {
     if (txSuccess) {
@@ -65,7 +68,7 @@ const useFacetToken = (): FacetTokenReturn => {
     },
     argsError: !address || !token,
     mutateStatus: {
-      isError: writeError,
+      isError: writeError || txError,
       isLoading: writeLoading || txLoading,
       isSuccess: txSuccess,
     },

@@ -16,7 +16,7 @@ export const FacetForm = () => {
   if (hash) {
     if (mutateStatus?.isLoading) {
       return (
-        <div className="flex h-20 flex-col items-stretch">
+        <div className="flex flex-col items-stretch">
           <TxAlert
             message="Transaction is pending"
             color="primary"
@@ -28,9 +28,9 @@ export const FacetForm = () => {
     }
     if (mutateStatus?.isError) {
       return (
-        <div className="flex h-20 flex-col items-stretch">
+        <div className="flex flex-col items-stretch">
           <TxAlert
-            message="Recicing token failed"
+            message="Receiving token failed"
             color="danger"
             hash={hash}
             chain={chain}
