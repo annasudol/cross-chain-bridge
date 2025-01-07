@@ -5,13 +5,12 @@ import { useAccount } from 'wagmi';
 
 import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
 import { SubmitButton } from '@/components/button/SubmitButton';
+import { SwitchNetworkButton } from '@/components/button/SwitchNetworkButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
+import { Loading } from '@/components/Loading';
+import { TxAlert } from '@/components/TxAlert';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
-
-import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
-import { Loading } from '../Loading';
-import { TxAlert } from '../TxAlert';
 
 export const SwapForm = () => {
   const { balance, token } = useReadData();
