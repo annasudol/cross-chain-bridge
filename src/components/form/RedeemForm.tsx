@@ -83,7 +83,7 @@ export const RedeemForm = () => {
       <SubmitButton
         type="button"
         onPress={() => localstoragestate && handleRedeem(localstoragestate)}
-        className="my-2"
+        className="my-2 min-w-96"
       >
         Redeem {localstoragestate?.amount} {token?.value?.symbol}
       </SubmitButton>

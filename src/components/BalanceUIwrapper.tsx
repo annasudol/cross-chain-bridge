@@ -9,10 +9,9 @@ import { Loading } from './Loading';
 export function BalanceUIwrapper({ children }: { children: React.ReactNode }) {
   const { balance, token } = useReadData();
   const { address, chain } = useAccount();
-  console.log(balance, balance);
 
   return (
-    <div className="flex h-56 flex-col justify-between py-4 sm:px-4">
+    <div className="flex h-64 flex-col justify-between py-4 sm:px-4">
       <div className="text-sm text-white">
         {address && chain?.id && (
           <>

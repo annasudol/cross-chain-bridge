@@ -26,15 +26,6 @@ export default function MyTabs() {
             </CardBody>
           </Card>
         </Tab>
-        {/* <Tab key="redeem" title="Redeem">
-          <Card>
-            <CardBody>
-              <BalanceUIwrapper>
-                <RedeemForm />
-              </BalanceUIwrapper>
-            </CardBody>
-          </Card>
-        </Tab> */}
       </Tabs>
     </div>
   );
