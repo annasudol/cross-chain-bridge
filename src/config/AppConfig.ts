@@ -5,7 +5,7 @@ export const AppConfig = {
   description:
     'Start your next Web3 project with this template on simple crypto bridge as a starting point.',
   locale: 'en',
-  url: '/',
+  url: 'https://github.com/annasudol/cross-chain-bridge',
   author: 'Anna Sudol',
   author_git: 'https://github.com/annasudol',
 };
