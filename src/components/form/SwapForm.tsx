@@ -104,7 +104,12 @@ export const SwapForm = () => {
           }
           return errors;
         }}
-        onSubmit={() => {}}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            handleSwap({ amount: values.value });
+            setSubmitting(false);
+          }, 4);
+        }}
       >
         {({
           values,
@@ -143,9 +148,6 @@ export const SwapForm = () => {
               }
               isLoading={isSubmitting}
               className="mt-12 px-12"
-              onPress={() =>
-                !errors.value && handleSwap({ amount: values.value })
-              }
             >
               {getButtonText(values.value, errors)}
             </SubmitButton>

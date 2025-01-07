@@ -27,6 +27,7 @@ const SubmitButton = ({ children, ...props }: SubmitButtonProps) => {
         iconRight={
           !props.isDisabled && address ? ButtonRightIcon.ArrowRight : undefined
         }
+        {...props}
       >
         {!address ? 'Wallet is not connected' : children}
       </MyButton>

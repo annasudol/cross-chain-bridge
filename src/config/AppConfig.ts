@@ -1,9 +1,9 @@
 export const AppConfig = {
-  name: 'Web3 Template',
+  name: 'Cross Chain Bridge',
   emoji: '🚀',
   title: 'Next.js Web3 Template',
   description:
-    'Start your next Web3 project with this template on simple crypto bridge as a starting point.',
+    'Simplyfy crypto bridge to move assets between Sepolia and Binance Smart Chain',
   locale: 'en',
   url: 'https://github.com/annasudol/cross-chain-bridge',
   author: 'Anna Sudol',
