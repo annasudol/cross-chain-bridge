@@ -71,7 +71,9 @@ export function useReadData(): ReadVaultDataReturn {
     functionName: 'balanceOf',
     args: [address as Address],
   });
+
   const handleRefetchBalance = useCallback(() => refetchBalance(), []);
+
   const balance: TokenValue | undefined =
     balanceBInt !== undefined && decimals
       ? {

@@ -27,7 +27,7 @@ export const RedeemForm = () => {
   if (hash) {
     if (mutateStatus?.isLoading) {
       return (
-        <div className="flex h-20 flex-col items-stretch">
+        <div className="flex h-60 flex-col items-stretch">
           <TxAlert
             message="Transaction is pending"
             color="primary"
@@ -39,7 +39,7 @@ export const RedeemForm = () => {
     }
     if (mutateStatus?.isError) {
       return (
-        <div className="flex h-20 flex-col items-stretch">
+        <div className="flex h-60 flex-col items-stretch">
           <TxAlert
             message="Redeem failed"
             color="danger"
