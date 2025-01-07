@@ -41,7 +41,7 @@ export const RedeemForm = () => {
       return (
         <div className="flex h-60 flex-col items-stretch">
           <TxAlert
-            message="Redeem failed"
+            message="Redeem transaction failed"
             color="danger"
             hash={hash}
             chain={chain}
@@ -61,7 +61,7 @@ export const RedeemForm = () => {
       return (
         <div className="flex h-64 flex-col items-stretch">
           <TxAlert
-            message="Redeem token is successful"
+            message="You successfully redeemed token"
             color="success"
             hash={hash}
             chain={chain}

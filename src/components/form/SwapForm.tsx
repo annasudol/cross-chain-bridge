@@ -35,7 +35,7 @@ export const SwapForm = () => {
       return (
         <div className="flex flex-col items-stretch">
           <TxAlert
-            message="Swapping failed"
+            message="Swapping token failed"
             color="danger"
             hash={hash}
             chain={chain}
@@ -54,7 +54,7 @@ export const SwapForm = () => {
       return (
         <div className="flex flex-col items-stretch">
           <TxAlert
-            message="Swapping token is successful"
+            message={`Swapping ${token.value?.symbol} token is successful. You have to change network and redeem token`}
             color="success"
             hash={hash}
             chain={chain}

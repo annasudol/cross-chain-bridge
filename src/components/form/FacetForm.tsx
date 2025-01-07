@@ -43,7 +43,7 @@ export const FacetForm = () => {
       return (
         <div className="flex h-64 flex-col items-stretch">
           <TxAlert
-            message="Redeem token is successful"
+            message={`You have received token 1 ${token.value?.symbol}`}
             color="success"
             hash={hash}
             chain={chain}
