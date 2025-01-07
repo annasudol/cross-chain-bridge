@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import type { Address } from 'viem';
+import type { Address, Hash } from 'viem';
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -9,14 +9,14 @@ import {
 } from 'wagmi';
 
 import { getBridgeAddress } from '@/constants/contract';
-import type { CallContractStatus, TxHash } from '@/types';
+import type { CallContractStatus } from '@/types';
 
 import { useReadData } from './useReadVault';
 
 interface FacetTokenReturn {
-  tx?: TxHash;
+  tx?: Hash;
   handleFacet: () => void;
-  statusWrite: CallContractStatus;
+  mutateStatus: CallContractStatus;
   argsError: boolean;
 }
 
@@ -64,7 +64,7 @@ const useFacetToken = (): FacetTokenReturn => {
       });
     },
     argsError: !address || !token,
-    statusWrite: {
+    mutateStatus: {
       isError: writeError,
       isLoading: writeLoading || txLoading,
       isSuccess: txSuccess,

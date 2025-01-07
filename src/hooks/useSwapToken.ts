@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { Address } from 'viem';
+import { useCallback, useEffect, useState } from 'react';
+import type { Address, Hash } from 'viem';
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -10,7 +10,7 @@ import {
 
 import { getBridgeAddress } from '@/constants/contract';
 import { parseToBigInt } from '@/lib/formatBigInt';
-import type { CallContractStatus, TxHash } from '@/types';
+import type { CallContractStatus } from '@/types';
 
 import useLocalStorage from './useLocalStorage';
 import { useReadData } from './useReadVault';
@@ -20,10 +20,11 @@ interface SwapAmount {
 }
 
 interface SwapTokenReturn {
-  tx?: TxHash;
+  hash?: Hash;
   handleSwap: ({ amount }: SwapAmount) => void;
-  statusWrite: CallContractStatus;
+  mutateStatus?: CallContractStatus;
   argsError: boolean;
+  clearTransaction: () => void;
 }
 
 const useSwapToken = (): SwapTokenReturn => {
@@ -40,9 +41,10 @@ const useSwapToken = (): SwapTokenReturn => {
     writeContract: swapToken,
     isPending: writeLoading,
     isError: writeError,
+    reset: resetSwap,
   } = useWriteContract();
 
-  const { isSuccess: txSuccess, isLoading: txLoading } =
+  const { isSuccess: hashSuccess, isLoading: hashLoading } =
     useWaitForTransactionReceipt({
       hash: swapeHash,
       query: {
@@ -51,14 +53,18 @@ const useSwapToken = (): SwapTokenReturn => {
     });
 
   useEffect(() => {
-    if (txSuccess && address && swapeHash && amountToSwap) {
+    if (swapeHash && amountToSwap && address) {
       handleRefetchBalance();
       setStorageValue(amountToSwap, address, swapeHash);
     }
-  }, [txSuccess, swapeHash, address]);
+  }, [hashSuccess, swapeHash, address]);
+
+  const clearTransaction = useCallback(() => {
+    resetSwap();
+  }, []);
 
   return {
-    tx: swapeHash,
+    hash: swapeHash,
     handleSwap: ({ amount }: SwapAmount) => {
       const amountBint = parseToBigInt(
         amount,
@@ -85,11 +91,12 @@ const useSwapToken = (): SwapTokenReturn => {
       });
     },
     argsError: !address || !token,
-    statusWrite: {
+    mutateStatus: {
       isError: writeError,
-      isLoading: writeLoading || txLoading,
-      isSuccess: txSuccess,
+      isLoading: writeLoading || hashLoading,
+      isSuccess: hashSuccess,
     },
+    clearTransaction,
   };
 };
 

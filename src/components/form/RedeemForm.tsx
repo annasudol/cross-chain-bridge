@@ -1,85 +1,92 @@
-import React, { useEffect, useMemo } from 'react';
+import router from 'next/router';
+import React from 'react';
 import { useAccount } from 'wagmi';
 
-import { MyAlert } from '@/components/MyAlert';
-import { TxLink } from '@/components/TxLink';
+import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
+import { SubmitButton } from '@/components/button/SubmitButton';
+import { TxAlert } from '@/components/TxAlert';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadVault';
 import { useRedeemToken } from '@/hooks/useRedeemToken';
-import type { IStorage } from '@/types';
-
-import { SubmitButton } from '../button/SubmitButton';
 
 export const RedeemForm = () => {
   const { token } = useReadData();
-  const { chain, address } = useAccount();
-  const [txSwapHash, setTxSwapHash] = React.useState<string>();
-  const { handleRedeem, tx, statusWrite } = useRedeemToken();
+  const { chain } = useAccount();
+  const { handleRedeem, hash, mutateStatus } = useRedeemToken();
   const { localstoragestate, removeStorageValue } = useLocalStorage(
     `redeem-${[chain?.id]}`,
   );
 
-  useEffect(() => {
-    if (tx && statusWrite.isSuccess && txSwapHash) {
-      // Remove the successful transaction from local storage
-      removeStorageValue(txSwapHash);
-
-      // Optionally, perform any additional state updates here
+  const handleGoBack = () => {
+    router.push('/');
+    if (localstoragestate?.hash) {
+      removeStorageValue(localstoragestate.hash);
     }
-  }, [tx, statusWrite.isSuccess, removeStorageValue]);
-
-  const handleToRedeem = (v: IStorage) => {
-    setTxSwapHash(v.txHash);
-    handleRedeem(v);
   };
 
-  const redeemBtn = useMemo(() => {
-    const redeemByAccount = localstoragestate?.filter(
-      (x) => x.address === address,
-    );
-    const redeemState =
-      redeemByAccount && redeemByAccount?.length > 3
-        ? redeemByAccount.slice(
-            redeemByAccount.length - 4,
-            redeemByAccount.length - 1,
-          )
-        : redeemByAccount;
-
-    if (!redeemState || redeemState.length === 0) {
+  if (hash) {
+    if (mutateStatus?.isLoading) {
       return (
-        <div className="mb-12">
-          <MyAlert message="No transactions to redeem" color="warning" />
+        <div className="flex h-20 flex-col items-stretch">
+          <TxAlert
+            message="Transaction is pending"
+            color="primary"
+            hash={hash}
+            chain={chain}
+          />
         </div>
       );
     }
-    return redeemState.map((v) => (
-      <SubmitButton
-        key={v.txHash}
-        onPress={() => handleToRedeem(v)}
-        isLoading={statusWrite.isLoading}
-        className="my-2"
-      >
-        Redeem {v.amount} {token?.value?.symbol}
-      </SubmitButton>
-    ));
-  }, [
-    chain?.id,
-    localstoragestate,
-    address,
-    handleRedeem,
-    statusWrite.isLoading,
-  ]);
+    if (mutateStatus?.isError) {
+      return (
+        <div className="flex h-20 flex-col items-stretch">
+          <TxAlert
+            message="Redeem failed"
+            color="danger"
+            hash={hash}
+            chain={chain}
+          />
+          <MyButton
+            className="w-full max-w-48 text-white"
+            onPress={handleGoBack}
+            iconLeft={ButtonLeftIcon.ArrowLeft}
+          >
+            Go back
+          </MyButton>
+        </div>
+      );
+    }
 
+    if (mutateStatus?.isSuccess) {
+      return (
+        <div className="flex h-64 flex-col items-stretch">
+          <TxAlert
+            message="Redeem token is successful"
+            color="success"
+            hash={hash}
+            chain={chain}
+          />
+          <MyButton
+            className="mt-2 min-w-72 text-white"
+            onPress={() => router.push('/')}
+            color="primary"
+            iconLeft={ButtonLeftIcon.ArrowLeft}
+          >
+            Go back
+          </MyButton>
+        </div>
+      );
+    }
+  }
   return (
     <div>
-      {redeemBtn}
-      {tx && statusWrite.isSuccess && (
-        <MyAlert
-          message="Transaction is successful"
-          color="success"
-          description={<TxLink txHash={tx} />}
-        />
-      )}
+      <SubmitButton
+        type="button"
+        onPress={() => localstoragestate && handleRedeem(localstoragestate)}
+        className="my-2"
+      >
+        Redeem {localstoragestate?.amount} {token?.value?.symbol}
+      </SubmitButton>
     </div>
   );
 };

@@ -41,7 +41,7 @@ export interface TokenValue {
 
 export type Address = `0x${string}`;
 
-export type TxHash = `0x${string}`;
+export type Hash = `0x${string}`;
 
 export enum StepType {
   Deposit = 'Deposit',
@@ -58,5 +58,5 @@ export interface CallContractStatus {
 export interface IStorage {
   amount: string;
   address: Address;
-  txHash: string;
+  hash: string;
 }

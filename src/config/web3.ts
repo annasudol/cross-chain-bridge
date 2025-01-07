@@ -13,7 +13,3 @@ export const wagmiConfig = getDefaultConfig({
   chains: [sepolia, bscTestnet],
   ssr: true,
 });
-
-// transports: {
-//   [arbitrum.id]: http(process.env.NEXT_PUBLIC_ARBITRUM_RPC_URL),
-// },

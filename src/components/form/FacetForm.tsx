@@ -1,30 +1,28 @@
 import React, { useEffect } from 'react';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
-import { MyAlert } from '@/components/MyAlert';
-import { TxLink } from '@/components/TxLink';
 import { useFacetToken } from '@/hooks/useFacetToken';
 import { useReadData } from '@/hooks/useReadVault';
 
 export const FacetForm = () => {
   const { token, handleRefetchBalance } = useReadData();
 
-  const { handleFacet, tx, statusWrite } = useFacetToken();
+  const { handleFacet, tx, mutateStatus } = useFacetToken();
 
   useEffect(() => {
-    if (tx && statusWrite.isSuccess) {
+    if (tx && mutateStatus.isSuccess) {
       handleRefetchBalance();
     }
-  }, [tx, statusWrite]);
+  }, [tx, mutateStatus]);
 
   if (tx) {
     return (
       <div>
-        <MyAlert
+        {/* <MyAlert
           message="Transaction is successful"
           color="success"
-          description={<TxLink txHash={tx} />}
-        />
+          description={<TxLink hash={tx} />}
+        /> */}
       </div>
     );
   }

@@ -2,9 +2,7 @@ import { Card, CardBody, Tab, Tabs } from '@nextui-org/react';
 
 import { FacetForm } from '@/components/form/FacetForm';
 import { SwapForm } from '@/components/form/SwapForm';
-
-import { RedeemForm } from './form/RedeemForm';
-import { Wrapper } from './Wrapper';
+import { Wrapper } from '@/components/Wrapper';
 
 export default function MyTabs() {
   return (
@@ -28,7 +26,7 @@ export default function MyTabs() {
             </CardBody>
           </Card>
         </Tab>
-        <Tab key="redeem" title="Redeem">
+        {/* <Tab key="redeem" title="Redeem">
           <Card>
             <CardBody>
               <Wrapper>
@@ -36,7 +34,7 @@ export default function MyTabs() {
               </Wrapper>
             </CardBody>
           </Card>
-        </Tab>
+        </Tab> */}
       </Tabs>
     </div>
   );

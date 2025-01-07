@@ -3,37 +3,70 @@ import { Formik } from 'formik';
 import React from 'react';
 import { useAccount } from 'wagmi';
 
+import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
-import { MyAlert } from '@/components/MyAlert';
-import { TxLink } from '@/components/TxLink';
 import { useReadData } from '@/hooks/useReadVault';
 import { useSwapToken } from '@/hooks/useSwapToken';
 
 import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
 import { Loading } from '../Loading';
+import { TxAlert } from '../TxAlert';
 
 export const SwapForm = () => {
   const { balance, token } = useReadData();
 
-  const { handleSwap, statusWrite, tx } = useSwapToken();
-
+  const { handleSwap, mutateStatus, hash, clearTransaction } = useSwapToken();
   const { chain } = useAccount();
 
-  if (tx && statusWrite.isSuccess) {
-    return (
-      <div className="flex flex-col items-stretch">
-        <MyAlert
-          message="Transaction is successful"
-          color="success"
-          description={<TxLink txHash={tx} />}
-        />
-        <SwitchNetworkButton>
-          Click to change network to{' '}
-          {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
-        </SwitchNetworkButton>
-      </div>
-    );
+  if (hash) {
+    if (mutateStatus?.isLoading) {
+      return (
+        <div className="flex flex-col items-stretch">
+          <TxAlert
+            message="Transaction is pending"
+            color="primary"
+            hash={hash}
+            chain={chain}
+          />
+        </div>
+      );
+    }
+    if (mutateStatus?.isError) {
+      return (
+        <div className="flex flex-col items-stretch">
+          <TxAlert
+            message="Swapping failed"
+            color="danger"
+            hash={hash}
+            chain={chain}
+          />
+          <MyButton
+            iconLeft={ButtonLeftIcon.ArrowLeft}
+            onPress={clearTransaction}
+          >
+            Go back
+          </MyButton>
+        </div>
+      );
+    }
+
+    if (mutateStatus?.isSuccess) {
+      return (
+        <div className="flex flex-col items-stretch">
+          <TxAlert
+            message="Swapping token is successful"
+            color="success"
+            hash={hash}
+            chain={chain}
+          />
+          <SwitchNetworkButton>
+            Click to change network to{' '}
+            {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
+          </SwitchNetworkButton>
+        </div>
+      );
+    }
   }
   if (token.status.isLoading) {
     return <Loading />;
@@ -72,12 +105,7 @@ export const SwapForm = () => {
           }
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            handleSwap({ amount: values.value });
-            setSubmitting(false);
-          }, 400);
-        }}
+        onSubmit={() => {}}
       >
         {({
           values,
@@ -111,12 +139,14 @@ export const SwapForm = () => {
               type="submit"
               isDisabled={
                 isSubmitting ||
-                statusWrite.isLoading ||
                 Boolean(errors.value) ||
                 balance.value?.int === '0'
               }
-              isLoading={statusWrite.isLoading}
+              isLoading={isSubmitting}
               className="mt-12 px-12"
+              onPress={() =>
+                !errors.value && handleSwap({ amount: values.value })
+              }
             >
               {getButtonText(values.value, errors)}
             </SubmitButton>

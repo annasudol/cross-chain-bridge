@@ -1,17 +1,21 @@
-import { Link } from '@nextui-org/react';
-
-import { ChainName } from '@/types';
-// TODO: change it
-const transactionLink: Record<ChainName, string> = {
-  [ChainName.Sepolia]: 'https://sepolia.etherscan.io/tx/',
-};
+import type { Chain } from 'viem';
+import { sepolia } from 'viem/chains';
 
 interface TxLinkProps {
-  txHash: string;
-  chain?: ChainName;
+  hash: string;
+  chain?: Chain;
 }
 
-export function TxLink({ txHash, chain = ChainName.Sepolia }: TxLinkProps) {
-  const tokenLink = transactionLink[chain] + txHash;
-  return <Link href={tokenLink}>Transaction dedails</Link>;
+export function TxLink({ hash, chain = sepolia }: TxLinkProps): JSX.Element {
+  const href = `${chain.blockExplorers?.default.url}/tx/${hash}`;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-500 underline"
+    >
+      View on {chain.blockExplorers?.default.name}
+    </a>
+  );
 }
