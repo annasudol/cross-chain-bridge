@@ -78,15 +78,30 @@ export const RedeemForm = () => {
       );
     }
   }
+  if (localstoragestate) {
+    return (
+      <div>
+        <SubmitButton
+          type="button"
+          onPress={() => localstoragestate && handleRedeem(localstoragestate)}
+          className="my-2 min-w-96"
+        >
+          Redeem {localstoragestate?.amount} {token?.value?.symbol}
+        </SubmitButton>
+      </div>
+    );
+  }
   return (
-    <div>
-      <SubmitButton
-        type="button"
-        onPress={() => localstoragestate && handleRedeem(localstoragestate)}
-        className="my-2 min-w-96"
+    <div className="flex flex-col">
+      <span className="mb-4">No token to redeem </span>
+      <MyButton
+        className="mt-2 min-w-72 text-white"
+        onPress={() => router.push('/')}
+        color="primary"
+        iconLeft={ButtonLeftIcon.ArrowLeft}
       >
-        Redeem {localstoragestate?.amount} {token?.value?.symbol}
-      </SubmitButton>
+        Go back
+      </MyButton>
     </div>
   );
 };
