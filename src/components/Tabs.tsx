@@ -31,7 +31,6 @@ export default function MyTabs() {
         <Tab key="redeem" title="Redeem">
           <Card>
             <CardBody>
-              {' '}
               <Wrapper>
                 <RedeemForm />
               </Wrapper>

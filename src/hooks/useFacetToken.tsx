@@ -30,10 +30,7 @@ const useFacetToken = (): FacetTokenReturn => {
     writeContract: facetToken,
     isPending: writeLoading,
     isError: writeError,
-    // error: errorMessage,
   } = useWriteContract();
-  // TODO: Add error message
-  // console.log(errorMessage);
 
   const { isSuccess: txSuccess, isLoading: txLoading } =
     useWaitForTransactionReceipt({

@@ -1,7 +1,7 @@
 import { Link } from '@nextui-org/react';
 
 import { ChainName } from '@/types';
-
+// TODO: change it
 const transactionLink: Record<ChainName, string> = {
   [ChainName.Sepolia]: 'https://sepolia.etherscan.io/tx/',
 };

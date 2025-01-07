@@ -37,10 +37,7 @@ export const FacetForm = () => {
         currency that allows you to swap sETH to{' '}
         {token.value?.symbol === 'sETH' ? 'tBSC' : 'sETH'}{' '}
       </p>
-      <SubmitButton
-        onPress={() => handleFacet()}
-        isLoading={statusWrite.isLoading}
-      >
+      <SubmitButton onPress={() => handleFacet()}>
         {`Click to receive ${token.value?.symbol}`}
       </SubmitButton>
     </div>
