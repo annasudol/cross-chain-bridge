@@ -1,4 +1,4 @@
-# Vault Interface
+# crypto Bridge
 
 A simplify crypto Bridge betwen testnet networks: Sepolia and Binance. Built with Next.js 14, TypeScript, Tailwind CSS, and wagmi v2.
 
