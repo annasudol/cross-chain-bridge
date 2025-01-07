@@ -147,7 +147,6 @@ export const SwapForm = () => {
                 balance.value?.int === '0'
               }
               isLoading={isSubmitting}
-              className="mt-12 px-12"
             >
               {getButtonText(values.value, errors)}
             </SubmitButton>
