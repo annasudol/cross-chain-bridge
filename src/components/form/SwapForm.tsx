@@ -21,7 +21,7 @@ export const SwapForm = () => {
   if (hash) {
     if (mutateStatus?.isLoading) {
       return (
-        <div className="flex flex-col items-stretch">
+        <div className="flex h-64 flex-col items-stretch">
           <TxAlert
             message="Transaction is pending"
             color="primary"
@@ -33,7 +33,7 @@ export const SwapForm = () => {
     }
     if (mutateStatus?.isError) {
       return (
-        <div className="flex flex-col items-stretch">
+        <div className="flex h-64 flex-col items-stretch">
           <TxAlert
             message="Swapping token failed"
             color="danger"
@@ -52,7 +52,7 @@ export const SwapForm = () => {
 
     if (mutateStatus?.isSuccess) {
       return (
-        <div className="flex flex-col items-stretch">
+        <div className="flex h-64 flex-col items-stretch">
           <TxAlert
             message={`Swapping ${token.value?.symbol} token is successful. You have to change network and redeem token`}
             color="success"
@@ -75,13 +75,17 @@ export const SwapForm = () => {
     values: string,
     errors: FormikErrors<{ value: string }>,
   ) => {
-    if (balance.value?.int === '0') {
-      return `Not enough ${token.value?.symbol} balance`;
+    const tokenSymbol = token.value?.symbol;
+    if (tokenSymbol) {
+      if (balance.value?.int === '0') {
+        return `Not enough ${tokenSymbol} balance`;
+      }
+      if (!errors.value) {
+        return `Swap ${values} ${tokenSymbol}`;
+      }
+      return `Swap ... ${tokenSymbol}`;
     }
-    if (!errors.value) {
-      return `Swap ${values} ${token.value?.symbol}`;
-    }
-    return `Swap ... ${token.value?.symbol}`;
+    return <Loading dots={true} />;
   };
 
   return (

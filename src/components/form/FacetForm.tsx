@@ -2,10 +2,11 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 
 import { SubmitButton } from '@/components/button/SubmitButton';
+import { TxAlert } from '@/components/TxAlert';
 import { useFacetToken } from '@/hooks/useFacetToken';
 import { useReadData } from '@/hooks/useReadVault';
 
-import { TxAlert } from '../TxAlert';
+import { Loading } from '../Loading';
 
 export const FacetForm = () => {
   const { token } = useReadData();
@@ -16,7 +17,7 @@ export const FacetForm = () => {
   if (hash) {
     if (mutateStatus?.isLoading) {
       return (
-        <div className="flex flex-col items-stretch">
+        <div className="flex h-64 flex-col items-stretch">
           <TxAlert
             message="Transaction is pending"
             color="primary"
@@ -28,9 +29,9 @@ export const FacetForm = () => {
     }
     if (mutateStatus?.isError) {
       return (
-        <div className="flex flex-col items-stretch">
+        <div className="flex h-64 flex-col items-stretch">
           <TxAlert
-            message="Receiving token failed"
+            message="Receiving token failed. You can request 1 token every 24h"
             color="danger"
             hash={hash}
             chain={chain}
@@ -43,7 +44,7 @@ export const FacetForm = () => {
       return (
         <div className="flex h-64 flex-col items-stretch">
           <TxAlert
-            message={`You have received token 1 ${token.value?.symbol}`}
+            message={`You have received 1 ${token.value?.symbol}`}
             color="success"
             hash={hash}
             chain={chain}
@@ -61,7 +62,7 @@ export const FacetForm = () => {
         {token.value?.symbol === 'sETH' ? 'tBSC' : 'sETH'}{' '}
       </p>
       <SubmitButton onPress={() => handleFacet()}>
-        {`Click to receive ${token.value?.symbol}`}
+        {`Click to receive ${token.value?.symbol ? token.value?.symbol : <Loading dots={true} />}`}
       </SubmitButton>
     </div>
   );
