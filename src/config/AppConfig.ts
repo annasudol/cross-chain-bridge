@@ -1,7 +1,7 @@
 export const AppConfig = {
   name: 'Cross Chain Bridge',
   emoji: '🚀',
-  title: 'Next.js Web3 Template',
+  title: 'Web3 Bridge',
   description:
     'Simplyfy crypto bridge to move assets between Sepolia and Binance Smart Chain',
   locale: 'en',

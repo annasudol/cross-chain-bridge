@@ -5,9 +5,19 @@ import { useAccount, useReadContract } from 'wagmi';
 
 import { getBridgeAddress } from '@/constants/contract';
 import { formatBigInt } from '@/lib/formatBigInt';
-import type { CallContractStatus, TokenInfo, TokenValue } from '@/types';
+import type { CallContractStatus } from '@/types';
 
-interface ReadVaultDataReturn {
+export interface TokenValue {
+  int?: string;
+  bigInt?: bigint;
+}
+
+export interface TokenInfo {
+  symbol: string;
+  decimals: number;
+}
+
+interface ReadDataReturn {
   balance: {
     value?: TokenValue;
     status: CallContractStatus;
@@ -19,7 +29,7 @@ interface ReadVaultDataReturn {
   handleRefetchBalance: () => void;
 }
 
-export function useReadData(): ReadVaultDataReturn {
+export function useReadData(): ReadDataReturn {
   const { chain, address } = useAccount();
   const bridgeAddress = getBridgeAddress(chain?.id);
 
