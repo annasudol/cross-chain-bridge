@@ -9,8 +9,8 @@ import { SwitchNetworkButton } from '@/components/button/SwitchNetworkButton';
 import { TokenTinput } from '@/components/inputs/TokenTinput';
 import { Loading } from '@/components/Loading';
 import { TxAlert } from '@/components/TxAlert';
+import { useSwapToken } from '@/hooks/mutations/useSwapToken';
 import { useReadData } from '@/hooks/useReadVault';
-import { useSwapToken } from '@/hooks/useSwapToken';
 
 export const SwapForm = () => {
   const { balance, token } = useReadData();

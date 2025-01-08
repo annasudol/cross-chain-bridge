@@ -5,9 +5,9 @@ import { useAccount } from 'wagmi';
 import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TxAlert } from '@/components/TxAlert';
+import { useRedeemToken } from '@/hooks/mutations/useRedeemToken';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadVault';
-import { useRedeemToken } from '@/hooks/useRedeemToken';
 
 export const RedeemForm = () => {
   const { token } = useReadData();

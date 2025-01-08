@@ -1,5 +1,7 @@
 import type { Address } from 'viem';
 
+import { envs } from '@/lib/envs';
+
 enum ChainID {
   BscScan = 97,
   Sepolia = 11155111,
@@ -8,8 +10,8 @@ type ContractAddress = {
   [key in ChainID]: Address;
 };
 export const BRIDGE_ADDRESS: ContractAddress = {
-  11155111: '0x43bAeD0FA2AA5a5eA269B49EAF26821C6c0B22EF',
-  97: '0x67408729BFD8192673ADc073D4Ca33A56c55811d',
+  11155111: envs.NEXT_PUBLIC_BRIDGE_SEPOLIA_ADDRESS,
+  97: envs.NEXT_PUBLIC_BRIDGE_BSCSCAN_ADDRESS,
 };
 
 export const getBridgeAddress = (chainID?: ChainID) => {

@@ -8,12 +8,11 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import { getBridgeAddress } from '@/constants/contract';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { useReadData } from '@/hooks/useReadVault';
 import { parseToBigInt } from '@/lib/formatBigInt';
+import { getBridgeAddress } from '@/lib/getBridgeAddress';
 import type { CallContractStatus } from '@/types';
-
-import useLocalStorage from './useLocalStorage';
-import { useReadData } from './useReadVault';
 
 interface SwapAmount {
   amount: string;

@@ -3,8 +3,8 @@ import type { Address } from 'viem';
 import { erc20Abi } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
-import { getBridgeAddress } from '@/constants/contract';
 import { formatBigInt } from '@/lib/formatBigInt';
+import { getBridgeAddress } from '@/lib/getBridgeAddress';
 import type { CallContractStatus } from '@/types';
 
 export interface TokenValue {

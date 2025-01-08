@@ -8,10 +8,9 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import { getBridgeAddress } from '@/constants/contract';
+import { useReadData } from '@/hooks/useReadVault';
+import { getBridgeAddress } from '@/lib/getBridgeAddress';
 import type { CallContractStatus } from '@/types';
-
-import { useReadData } from './useReadVault';
 
 interface FacetTokenReturn {
   hash?: Hash;

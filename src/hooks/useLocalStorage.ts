@@ -18,7 +18,6 @@ const useLocalStorage = (key: string) => {
         try {
           setLocalStorageState(JSON.parse(value));
         } catch {
-          // eslint-disable-next-line no-console
           throw new Error('Error parsing localStorage value');
         }
       }

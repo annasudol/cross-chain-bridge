@@ -8,11 +8,11 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import { getBridgeAddress } from '@/constants/contract';
 import type { IStorage } from '@/hooks/useLocalStorage';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadVault';
 import { parseToBigInt } from '@/lib/formatBigInt';
+import { getBridgeAddress } from '@/lib/getBridgeAddress';
 import type { CallContractStatus } from '@/types';
 
 interface RedeemValues extends IStorage {}
