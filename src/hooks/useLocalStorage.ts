@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { Address } from 'viem';
+import type { Address, Hash } from 'viem';
 
-import type { IStorage } from '@/types';
-
+export interface IStorage {
+  amount: string;
+  address: Address;
+  hash: Hash;
+}
 const useLocalStorage = (key: string) => {
   const [localstoragestate, setLocalStorageState] = useState<
     IStorage | undefined
@@ -23,7 +26,7 @@ const useLocalStorage = (key: string) => {
   }, [key]);
 
   const setStorageValue = useCallback(
-    (amount: string, address: Address, hash: string) => {
+    (amount: string, address: Address, hash: Hash) => {
       try {
         if (typeof window !== 'undefined') {
           const valueToStore = { amount, address, hash };

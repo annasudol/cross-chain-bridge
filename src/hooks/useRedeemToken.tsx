@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { Address } from 'viem';
+import type { Address, Hash } from 'viem';
 import {
   useAccount,
   useWaitForTransactionReceipt,
@@ -9,11 +9,11 @@ import {
 } from 'wagmi';
 
 import { getBridgeAddress } from '@/constants/contract';
+import type { IStorage } from '@/hooks/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { useReadData } from '@/hooks/useReadVault';
 import { parseToBigInt } from '@/lib/formatBigInt';
-import type { CallContractStatus, Hash, IStorage } from '@/types';
-
-import useLocalStorage from './useLocalStorage';
-import { useReadData } from './useReadVault';
+import type { CallContractStatus } from '@/types';
 
 interface RedeemValues extends IStorage {}
 interface RedeemTokenReturn {
