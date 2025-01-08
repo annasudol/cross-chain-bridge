@@ -17,7 +17,7 @@ export const envs = createEnv({
     NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID:
       process.env.NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID,
 
-    // Etherscan
+    // Contract Addresses
     NEXT_PUBLIC_BRIDGE_SEPOLIA_ADDRESS:
       process.env.NEXT_PUBLIC_BRIDGE_SEPOLIA_ADDRESS,
     NEXT_PUBLIC_BRIDGE_BSCSCAN_ADDRESS:
