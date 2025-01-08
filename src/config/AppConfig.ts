@@ -3,7 +3,7 @@ export const AppConfig = {
   emoji: '🚀',
   title: 'Web3 Bridge',
   description:
-    'Simplyfy crypto bridge to move assets between Sepolia and Binance Smart Chain',
+    'Simplyfy crypto bridge. You can move  ERC20 token assets between Sepolia and Binance Smart Chain',
   locale: 'en',
   url: 'https://github.com/annasudol/cross-chain-bridge',
   author: 'Anna Sudol',
