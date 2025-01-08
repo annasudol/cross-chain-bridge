@@ -11,6 +11,7 @@ import { Loading } from '../Loading';
 export const FacetForm = () => {
   const { token } = useReadData();
   const { chain } = useAccount();
+  const tokenSymbol = token.value?.symbol;
 
   const { handleFacet, hash, mutateStatus } = useFacetToken();
 
@@ -55,12 +56,14 @@ export const FacetForm = () => {
   }
   return (
     <div>
-      <p className="text-sm text-gray-400">
-        To request {token.value?.symbol} funds, click button. You can request 1
-        {token.value?.symbol} every 24h! {token.value?.symbol} tokens is a
-        currency that allows you to swap sETH to{' '}
-        {token.value?.symbol === 'sETH' ? 'tBSC' : 'sETH'}{' '}
-      </p>
+      {tokenSymbol && (
+        <p className="text-sm text-gray-400">
+          To request {tokenSymbol} funds, click button. You can request 1
+          {tokenSymbol} every 24h!
+          {tokenSymbol} tokens is a currency that allows you to swap sETH to{' '}
+          {tokenSymbol === 'sETH' ? 'tBSC' : 'sETH'}{' '}
+        </p>
+      )}
       <SubmitButton onPress={() => handleFacet()}>
         {`Click to receive ${token.value?.symbol ? token.value?.symbol : <Loading dots={true} />}`}
       </SubmitButton>
