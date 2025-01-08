@@ -38,7 +38,6 @@ interface MyButtonProps extends ButtonProps {
   className?: string;
   iconRight?: ButtonRightIcon;
   iconLeft?: ButtonLeftIcon;
-  customVariant?: 'gradient';
 }
 
 const MyButton = ({
@@ -46,29 +45,13 @@ const MyButton = ({
   iconRight,
   iconLeft,
   className,
-  customVariant,
   isLoading,
   ...props
 }: MyButtonProps) => {
   const buttonIconLeft = iconLeft && !isLoading && buttonLeftIcons[iconLeft];
   const buttonIconRight =
     iconRight && !isLoading && buttonRightIcons[iconRight];
-  if (customVariant === 'gradient') {
-    return (
-      <Button
-        className={cn(
-          'rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 font-semibold text-white text-center disabled:opacity-50',
-          className,
-        )}
-        isLoading={isLoading}
-        {...props}
-      >
-        <p className="flex size-full justify-center rounded-full bg-gray-900 px-3 py-2 text-center text-white">
-          {children}
-        </p>
-      </Button>
-    );
-  }
+
   return (
     <Button
       isLoading={isLoading}
