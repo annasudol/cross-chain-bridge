@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi';
 import { SubmitButton } from '@/components/button/SubmitButton';
 import { TxAlert } from '@/components/TxAlert';
 import { useFacetToken } from '@/hooks/mutations/useFacetToken';
-import { useReadData } from '@/hooks/useReadVault';
+import { useReadData } from '@/hooks/useReadData';
 
 import { Loading } from '../Loading';
 

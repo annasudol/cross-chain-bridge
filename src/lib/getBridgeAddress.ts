@@ -14,6 +14,6 @@ export const BRIDGE_ADDRESS: ContractAddress = {
   97: envs.NEXT_PUBLIC_BRIDGE_BSCSCAN_ADDRESS,
 };
 
-export const getBridgeAddress = (chainID?: ChainID) => {
+export const getBridgeAddress = (chainID?: ChainID): Address | undefined => {
   return chainID ? BRIDGE_ADDRESS[chainID] : undefined;
 };
