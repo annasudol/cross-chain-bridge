@@ -8,7 +8,7 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import { useReadData } from '@/hooks/useReadVault';
+import { useReadData } from '@/hooks/useReadData';
 import { getBridgeAddress } from '@/lib/getBridgeAddress';
 import type { CallContractStatus } from '@/types';
 

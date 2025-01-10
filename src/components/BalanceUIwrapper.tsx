@@ -2,7 +2,7 @@
 
 import { useAccount } from 'wagmi';
 
-import { useReadData } from '@/hooks/useReadVault';
+import { useReadData } from '@/hooks/useReadData';
 
 import { Loading } from './Loading';
 

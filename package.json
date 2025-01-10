@@ -2,9 +2,9 @@
   "name": "bridge",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node api.js && next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node api.js && next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
     "build-prod": "run-s clean build",
     "clean": "rimraf .next .swc out",
