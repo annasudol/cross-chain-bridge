@@ -8,6 +8,7 @@ interface TxLinkProps {
 
 export function TxLink({ hash, chain = sepolia }: TxLinkProps): JSX.Element {
   const href = `${chain.blockExplorers?.default.url}/tx/${hash}`;
+
   return (
     <a
       href={href}
@@ -15,7 +16,7 @@ export function TxLink({ hash, chain = sepolia }: TxLinkProps): JSX.Element {
       rel="noopener noreferrer"
       className="text-blue-500 underline"
     >
-      View on {chain.blockExplorers?.default.name}
+      View on {chain.blockExplorers?.default.name} {chain.name}
     </a>
   );
 }

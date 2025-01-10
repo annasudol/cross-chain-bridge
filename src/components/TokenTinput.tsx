@@ -10,7 +10,9 @@ interface TokenTinputProps extends InputProps {
 export const TokenTinput = ({ value, max, ...props }: TokenTinputProps) => {
   return (
     <div className="text-right">
-      <p className="relative top-5 text-xs text-gray-400">Max. {max}</p>
+      {max && (
+        <p className="relative top-5 text-xs text-gray-400">Max. {max}</p>
+      )}
       <Input
         label={value || 'sETH'}
         labelPlacement="outside"

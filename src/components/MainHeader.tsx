@@ -1,4 +1,4 @@
-import { AppConfig } from '@/config/AppConfig';
+import { siteConfig } from '@/config/siteConfig';
 
 const MainHeader = () => (
   <header className="">
@@ -10,7 +10,7 @@ const MainHeader = () => (
             Bridge{' '}
           </span>
         </h1>
-        <div className="text-md mt-4 md:px-20">{AppConfig.description}</div>
+        <div className="text-md mt-4 md:px-20">{siteConfig.description}</div>
       </div>
     </div>
   </header>

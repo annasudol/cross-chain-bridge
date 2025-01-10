@@ -2,82 +2,52 @@ import router from 'next/router';
 import React from 'react';
 import { useAccount } from 'wagmi';
 
-import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
-import { SubmitButton } from '@/components/button/SubmitButton';
-import { TxAlert } from '@/components/TxAlert';
-import { useRedeemToken } from '@/hooks/mutations/useRedeemToken';
+import { ButtonLeftIcon, MyButton } from '@/components/button/MyButton';
+import { useRedeemMutation } from '@/hooks/mutations/useRedeemMutation';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { useReadData } from '@/hooks/useReadData';
+import { useTransactionManager } from '@/providers/TransactionProvider';
+
+import { SubmitButton } from '../button/SubmitButton';
+import { TxAlert } from '../TxAlert';
 
 export const RedeemForm = () => {
   const { token } = useReadData();
   const { chain } = useAccount();
-  const { handleRedeem, hash, mutateStatus } = useRedeemToken();
+  const { mutateAsync: handleRedeem } = useRedeemMutation();
   const { localstoragestate, removeStorageValue } = useLocalStorage(
     `redeem-${[chain?.id]}`,
   );
+
+  const { transaction, clearTransaction } = useTransactionManager();
 
   const handleGoBack = () => {
     router.push('/');
     if (localstoragestate?.hash) {
       removeStorageValue(localstoragestate.hash);
+      clearTransaction();
     }
   };
 
-  if (hash) {
-    if (mutateStatus?.isLoading) {
-      return (
-        <div className="flex h-60 flex-col items-stretch">
-          <TxAlert
-            message="Transaction is pending"
-            color="primary"
-            hash={hash}
-            chain={chain}
-          />
-        </div>
-      );
-    }
-    if (mutateStatus?.isError) {
-      return (
-        <div className="flex h-60 flex-col items-stretch">
-          <TxAlert
-            message="Redeem transaction failed"
-            color="danger"
-            hash={hash}
-            chain={chain}
-          />
-          <MyButton
-            className="w-full max-w-48 text-white"
-            onPress={handleGoBack}
-            iconLeft={ButtonLeftIcon.ArrowLeft}
-          >
-            Go back
-          </MyButton>
-        </div>
-      );
-    }
-
-    if (mutateStatus?.isSuccess) {
-      return (
-        <div className="flex h-64 flex-col items-stretch">
-          <TxAlert
-            message="You successfully redeemed token"
-            color="success"
-            hash={hash}
-            chain={chain}
-          />
-          <MyButton
-            className="mt-2 min-w-72 text-white"
-            onPress={() => router.push('/')}
-            color="primary"
-            iconLeft={ButtonLeftIcon.ArrowLeft}
-          >
-            Go back
-          </MyButton>
-        </div>
-      );
-    }
+  if (transaction) {
+    return (
+      <div className="mb-4 flex flex-col">
+        <TxAlert {...transaction} />
+        {transaction?.state === 'success' ||
+          (transaction?.state === 'failed' && (
+            <MyButton
+              className="mt-2 min-w-72 text-white"
+              onPress={handleGoBack}
+              color="primary"
+              iconLeft={ButtonLeftIcon.ArrowLeft}
+            >
+              Go back
+            </MyButton>
+          ))}
+      </div>
+    );
   }
+
   if (localstoragestate) {
     return (
       <div>

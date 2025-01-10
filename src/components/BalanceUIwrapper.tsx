@@ -11,11 +11,11 @@ export function BalanceUIwrapper({ children }: { children: React.ReactNode }) {
   const { address, chain } = useAccount();
 
   return (
-    <div className="flex h-64 flex-col justify-between py-4 sm:px-4">
+    <div className="flex h-72 flex-col justify-between py-4 sm:px-4">
       <div className="text-sm text-white">
         {address && chain?.id && (
           <>
-            <div className="flex justify-start text-white">
+            <div className="flex justify-center text-white">
               Your balance:
               {balance.status.isLoading && (
                 <>

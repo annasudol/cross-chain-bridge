@@ -3,17 +3,17 @@ import type { PropsWithChildren } from 'react';
 import React from 'react';
 
 import { Footer } from '@/components/Footer';
-import { MainHeader } from '@/components/header/MainHeader';
+import { MainHeader } from '@/components/MainHeader';
 import { MainNavbar } from '@/components/MainNavbar';
-import { AppConfig } from '@/config/AppConfig';
+import { siteConfig } from '@/config/siteConfig';
 
 export function MainLayout(props: PropsWithChildren) {
   return (
-    <div>
+    <>
       <NextSeo
-        title={AppConfig.name}
-        description={AppConfig.description}
-        canonical={AppConfig.url}
+        title={siteConfig.name}
+        description={siteConfig.description}
+        canonical={siteConfig.url}
       />
       <div className="flex min-h-screen flex-col justify-between">
         <MainNavbar />
@@ -23,6 +23,6 @@ export function MainLayout(props: PropsWithChildren) {
         </main>
         <Footer />
       </div>
-    </div>
+    </>
   );
 }

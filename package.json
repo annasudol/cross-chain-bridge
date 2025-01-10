@@ -9,6 +9,7 @@
     "build-prod": "run-s clean build",
     "clean": "rimraf .next .swc out",
     "lint": "next lint",
+    "codegen": "wagmi generate --config src/config/wagmi-cli/wagmi-config.ts",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
     "check-types": "tsc --noEmit --pretty",
     "prepare": "husky install"
@@ -47,7 +48,9 @@
     "styled-jsx-plugin-postcss": "^4.0.1",
     "viem": "^2.21.60",
     "wagmi": "^2.14.1",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "@wagmi/cli": "^2.1.17",
+    "tslog": "^4.9.3"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.1.0",

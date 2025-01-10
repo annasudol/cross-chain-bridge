@@ -1,6 +1,6 @@
 import { Link } from '@nextui-org/react';
 
-import { AppConfig } from '@/config/AppConfig';
+import { siteConfig } from '@/config/siteConfig';
 
 const Footer = () => (
   <footer className="h-22 mx-auto max-w-screen-lg p-4 text-center">
@@ -9,17 +9,17 @@ const Footer = () => (
         Developed by{' '}
         <Link
           isExternal
-          href={AppConfig.author_git}
+          href={siteConfig.author_git}
           className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
         >
-          {AppConfig.author}
+          {siteConfig.author}
         </Link>
         .
       </p>
       <Link
         isExternal
         showAnchorIcon
-        href={AppConfig.url}
+        href={siteConfig.url}
         className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
       >
         Visit source code on GitHub.
