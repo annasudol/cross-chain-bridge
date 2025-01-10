@@ -7,7 +7,7 @@ import { SubmitButton } from '@/components/button/SubmitButton';
 import { TxAlert } from '@/components/TxAlert';
 import { useRedeemToken } from '@/hooks/mutations/useRedeemToken';
 import useLocalStorage from '@/hooks/useLocalStorage';
-import { useReadData } from '@/hooks/useReadVault';
+import { useReadData } from '@/hooks/useReadData';
 
 export const RedeemForm = () => {
   const { token } = useReadData();
