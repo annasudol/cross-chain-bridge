@@ -1,15 +1,24 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-import MyButton from './MyButton';
+import { MyButton } from './MyButton';
 
 interface ISwitchNetworkBtn {
-  label?: string;
   children: React.ReactNode;
+  label?: string;
+  click?: () => void;
 }
-export const SwitchNetworkButton = ({ label, children }: ISwitchNetworkBtn) => {
+export const SwitchNetworkButton = ({
+  label,
+  children,
+  click,
+}: ISwitchNetworkBtn) => {
   return (
     <ConnectButton.Custom>
       {({ account, chain, openChainModal, authenticationStatus, mounted }) => {
+        const handleClick = () => {
+          openChainModal();
+          if (click) click();
+        };
         const ready = mounted && authenticationStatus !== 'loading';
         const connected =
           ready &&
@@ -36,7 +45,7 @@ export const SwitchNetworkButton = ({ label, children }: ISwitchNetworkBtn) => {
                       <span className="mx-1 text-lg text-white">{label}</span>
                     )}
                     <MyButton
-                      onPress={openChainModal}
+                      onPress={handleClick}
                       disabled={!connected || chain?.unsupported}
                       type="button"
                       size="lg"

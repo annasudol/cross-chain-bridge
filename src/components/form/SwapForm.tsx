@@ -1,72 +1,43 @@
 import type { FormikErrors } from 'formik';
 import { Formik } from 'formik';
 import React from 'react';
+import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 
-import MyButton, { ButtonLeftIcon } from '@/components/button/MyButton';
 import { SubmitButton } from '@/components/button/SubmitButton';
-import { SwitchNetworkButton } from '@/components/button/SwitchNetworkButton';
-import { TokenTinput } from '@/components/inputs/TokenTinput';
 import { Loading } from '@/components/Loading';
-import { TxAlert } from '@/components/TxAlert';
-import { useSwapToken } from '@/hooks/mutations/useSwapToken';
+import { TokenTinput } from '@/components/TokenTinput';
+import { useSwapMutation } from '@/hooks/mutations/useSwapMutation';
 import { useReadData } from '@/hooks/useReadData';
+import { useTransactionManager } from '@/providers/TransactionProvider';
+
+import { SwitchNetworkButton } from '../button/SwitchNetworkButton';
+import { TxAlert } from '../TxAlert';
 
 export const SwapForm = () => {
   const { balance, token } = useReadData();
-
-  const { handleSwap, mutateStatus, hash, clearTransaction } = useSwapToken();
+  const { address } = useAccount();
   const { chain } = useAccount();
 
-  if (hash) {
-    if (mutateStatus?.isLoading) {
-      return (
-        <div className="flex h-64 flex-col items-stretch">
-          <TxAlert
-            message="Transaction is pending"
-            color="primary"
-            hash={hash}
-            chain={chain}
-          />
-        </div>
-      );
-    }
-    if (mutateStatus?.isError) {
-      return (
-        <div className="flex h-64 flex-col items-stretch">
-          <TxAlert
-            message="Swapping token failed"
-            color="danger"
-            hash={hash}
-            chain={chain}
-          />
-          <MyButton
-            iconLeft={ButtonLeftIcon.ArrowLeft}
-            onPress={clearTransaction}
-          >
-            Go back
-          </MyButton>
-        </div>
-      );
-    }
+  const { mutateAsync: handleSwap, isPending } = useSwapMutation(chain?.id);
+  const { transaction, clearTransaction } = useTransactionManager();
 
-    if (mutateStatus?.isSuccess) {
-      return (
-        <div className="flex h-64 flex-col items-stretch">
-          <TxAlert
-            message={`Swapping ${token.value?.symbol} token is successful. You have to change network and redeem token`}
-            color="success"
-            hash={hash}
-            chain={chain}
-          />
-          <SwitchNetworkButton>
+  if (transaction) {
+    console.log(transaction, 'transaction');
+
+    return (
+      <>
+        <TxAlert {...transaction} />
+        {transaction?.state === 'success' && (
+          <SwitchNetworkButton click={() => clearTransaction()}>
             Click to change network to{' '}
             {[chain?.id === 97 ? 'Sepolia' : 'Binance']}
           </SwitchNetworkButton>
-        </div>
-      );
-    }
+        )}
+      </>
+    );
   }
+
   if (token.status.isLoading) {
     return <Loading />;
   }
@@ -110,7 +81,10 @@ export const SwapForm = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(() => {
-            handleSwap({ amount: values.value });
+            handleSwap({
+              address: address as Address,
+              amount: values.value,
+            });
             setSubmitting(false);
           }, 4);
         }}
@@ -125,6 +99,7 @@ export const SwapForm = () => {
           isSubmitting,
         }) => (
           <form onSubmit={handleSubmit}>
+            {chain?.id}
             <TokenTinput
               label={token.value?.symbol || 'sETH'}
               labelPlacement="outside"
@@ -150,7 +125,7 @@ export const SwapForm = () => {
                 Boolean(errors.value) ||
                 balance.value?.int === '0'
               }
-              isLoading={isSubmitting}
+              isLoading={isSubmitting || isPending}
             >
               {getButtonText(values.value, errors)}
             </SubmitButton>

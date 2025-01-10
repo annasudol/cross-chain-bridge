@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { BalanceUIwrapper } from '@/components/BalanceUIwrapper';
 import { RedeemForm } from '@/components/form/RedeemForm';
-import { MainLayout } from '@/components/layout/MainLayout';
+import { MainLayout } from '@/components/MainLayout';
 
 const HomePage = () => {
   const [isClient, setIsClient] = useState(false);
@@ -21,7 +21,7 @@ const HomePage = () => {
 
         {isClient && (
           <BalanceUIwrapper>
-            <div className="flex flex-col items-center justify-center gap-8 px-6 sm:py-12 md:flex-row">
+            <div className="flex flex-col items-center justify-center sm:py-12 md:flex-row">
               <RedeemForm />
             </div>
           </BalanceUIwrapper>
