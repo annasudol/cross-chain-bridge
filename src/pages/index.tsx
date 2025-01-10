@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
-import { MainLayout } from '@/components/layout/MainLayout';
+import { MainLayout } from '@/components/MainLayout';
 import MyTabs from '@/components/Tabs';
 import useLocalStorage from '@/hooks/useLocalStorage';
 

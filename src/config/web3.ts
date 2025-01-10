@@ -8,10 +8,10 @@ import { bscTestnet, sepolia } from 'viem/chains';
 
 import { envs } from '@/lib/envs';
 
-import { AppConfig } from './AppConfig';
+import { siteConfig } from './siteConfig';
 
 export const rainbowConfig = getDefaultConfig({
-  appName: AppConfig.title,
+  appName: siteConfig.title,
   projectId: envs.NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID,
   chains: [sepolia, bscTestnet],
   wallets: [
